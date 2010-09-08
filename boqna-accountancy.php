@@ -1,12 +1,13 @@
 <html>
 <head>
 <meta http-equiv='accounting' charset='UTF-8'/>
+<link rel="stylesheet" type="text/css" href="boqna-accountancy.css">
 <title>
 Счетоводство на комплекса
 </title>
 </head>
 <body>
-<table border='0' cellspacing='0' cellpadding='0' bgcolor='#CCCCCC'>
+<table border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
 <tr>
 <td>
 <?php
@@ -28,7 +29,7 @@ if (!$sql_result) {
     echo 'The error is :'.$error.'<br/';
 }
 
-echo '<table border="0" cellspacing="1" cellpadding="1">';
+echo '<table class="tableFormating" border="0" cellspacing="1" cellpadding="1">';
 echo '<tr  bgcolor="white"><th>За месец</th>
     <th>Дата</th>
     <th>Смет</th>
