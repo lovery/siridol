@@ -11,11 +11,12 @@
 
 function print_html_num_td($num) {
     if ($num<0) {
-        printf( "<td align='right' bgcolor='red'><nobr>$num</nobr></td>\n");
+        printf("<td class=tdNegative>");
     }
     else {
-        printf( "<td align='right'><nobr>$num</nobr></td>\n");
+        printf("<td class=tdNONegative>");
     }
+    printf("$num</td>\n");
 }
 
 $connect=mysql_connect("localhost", "root", "happypass");
