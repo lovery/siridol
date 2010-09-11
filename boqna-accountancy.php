@@ -39,15 +39,15 @@ if (!$sql_result) {
 
 printf("<table class='tableBorder'>\n");
 printf("<tr>
-    <th>За месец</th>
-    <th>Дата</th>
-    <th>Смет</th>
-    <th>Зелени площи</th>
-    <th>Домоупр.</th>
-    <th>Почист. улици</th>
-    <th>Фонд</th>
-    <th>Общо</th>
-    <th>Пояснение</th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort1.php>За месец</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort2.php>Дата</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort3.php>Смет</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort4.php>Зелени площи</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort5.php>Домоупр.</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort6.php>Почист. улици</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort7.php>Фонд</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort8.php>Общо</a></th>
+    <th><a href=http://localhost/Boqna/boqna-accountancy-sort9.php>Пояснение</a></th>
     </tr>");
 
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {

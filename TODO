@@ -2,12 +2,6 @@
 
 * Da se dobavi sumaren red za vseki mesec
 
-* Da se sortira tablicata po koloni "za mesec","data"
-  (ako "za mesec" e ednakvo, togava da e sortirano po "data")
-
 * Da se napravi na zaglavniq red kato se shtrakne na nqkoq kolona
   da se sortira tablicata po tazi kolona. Da moje da se sortira i
   v obraten red
-
-* Da se mahne kolonata "total" ot SQL tablicata i da se smqta v
-  dvijenie (on the fly) kato suma na drugite koloni
