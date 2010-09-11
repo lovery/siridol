@@ -29,26 +29,101 @@ if (!$result) {
     printf( "There is a problem with loading the database<br/>");
 }
 
-$sql=" SELECT date_format(Month, '%Y.%m') as month, date_format(Date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund,Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from boqna";
+printf("<table class='tableBorder'>\n");
+printf("<tr>
+    <th><nobr>За месец<a href=?sort=1&type=asc><img src='down_arrow.png'/></a><a href=?sort=1&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th><nobr>Дата<a href=?sort=2&type=asc><img src='down_arrow.png'/></a><a href=?sort=2&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th><nobr>Смет<a href=?sort=3&type=asc><img src='down_arrow.png'/></a><a href=?sort=3&type=desc><img src='up_arrow.png'/></a><nobr></th>
+    <th>Зелени <nobr>площи<a href=?sort=4&type=asc><img src='down_arrow.png'/></a><a href=?sort=4&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th><nobr>Домоупр.<a href=?sort=5&type=asc><img src='down_arrow.png'/></a><a href=?sort=5&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th>Почист. <nobr>улици<a href=?sort=6&type=asc><img src='down_arrow.png'/></a><a href=?sort=6&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th><nobr>Фонд<a href=?sort=7&type=asc><img src='down_arrow.png'/></a><a href=?sort=7&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th><nobr>Общо<a href=?sort=8&type=asc><img src='down_arrow.png'/></a><a href=?sort=8&type=desc><img src='up_arrow.png'/></a></nobr></th>
+    <th><nobr>Пояснение<a href=?sort=9&type=asc><img src='down_arrow.png'/></a><a href=?sort=9&type=desc><img src='up_arrow.png'/></a></nobr></th>
+</tr>");
+
+switch ($_GET["sort"]) {
+case 1: 
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by Month, Date";
+    }
+    else {
+        $sqlpl=" order by Month DESC, Date";
+    }
+    break;
+case 2:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by Date";
+    }
+    else {
+        $sqlpl=" order by Date DESC";
+    }
+    break;
+case 3:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by Rubbish, Date";
+    }
+    else {
+        $sqlpl=" order by Rubbish DESC, Date";
+    }
+    break;
+case 4:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by Greenarea, Date";
+    }
+    else {
+        $sqlpl=" order by Greenarea DESC, Date";
+    }
+    break;
+case 5:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by homemanager, Date";
+    }
+    else {
+        $sqlpl=" order by homemanager DESC, Date";
+    }
+    break;
+case 6:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by cleanstreets, Date";
+    }
+    else {
+        $sqlpl=" order by cleanstreets DESC, Date";
+    }
+    break;
+case 7:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by fund, Date";
+    }
+    else {
+        $sqlpl=" order by fund DESC, Date";
+    }
+    break;
+case 8:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by Rubbish+Greenarea+homemanager+cleanstreets+fund, Date";
+    }
+    else {
+        $sqlpl=" order by Rubbish+Greenarea+homemanager+cleanstreets+fund DESC, Date";
+    }
+    break;
+case 9:
+    if ($_GET["type"]=="asc") {
+        $sqlpl=" order by explanation, Date";
+    }
+    else {
+        $sqlpl=" order by explanation DESC, Date";
+    }
+    break;
+};
+
+$sql="SELECT date_format(Month, '%Y.%m') as month, date_format(Date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from boqna".$sqlpl;
 $sql_result=mysql_query($sql);
 if (!$sql_result) {
     printf( "There is a problem with selecting from database<br/>");
     $error=mysql_error();
     die( "The error is :".$error."<br/>");
 }
-
-printf("<table class='tableBorder'>\n");
-printf("<tr>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort1.php>За месец</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort2.php>Дата</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort3.php>Смет</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort4.php>Зелени площи</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort5.php>Домоупр.</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort6.php>Почист. улици</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort7.php>Фонд</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort8.php>Общо</a></th>
-    <th><a href=http://localhost/Boqna/boqna-accountancy-sort9.php>Пояснение</a></th>
-    </tr>");
 
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
     printf("<tr>\n");
