@@ -29,12 +29,12 @@ if (!$result) {
     printf( "There is a problem with loading the database<br/>");
 }
 
-$sql=" SELECT date_format(Month, '%Y.%m') as month, date_format(Date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, total, explanation from boqna";
+$sql=" SELECT date_format(Month, '%Y.%m') as month, date_format(Date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund,Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from boqna";
 $sql_result=mysql_query($sql);
 if (!$sql_result) {
-    printf( "There is a problem with selectin from database<br/>");
+    printf( "There is a problem with selecting from database<br/>");
     $error=mysql_error();
-    printf( "The error is :".$error."<br/>");
+    die( "The error is :".$error."<br/>");
 }
 
 printf("<table class='tableBorder'>\n");
@@ -64,7 +64,12 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
     printf("</tr>\n");
 }
 
-$total_sql=mysql_query("select sum(Rubbish) as trub, sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean, sum(fund) as tfund, sum(total) as total from boqna");
+$total_sql=mysql_query("select trub, tgreen, thome, tclean, tfund, trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub, sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean, sum(fund) as tfund from boqna) as tab");
+if (!$total_sql) {
+    printf( "There is a problem with selecting from database<br/>");
+    $error=mysql_error();
+    die( "The error is :".$error."<br/>");
+}
 $total=mysql_fetch_array($total_sql, MYSQL_ASSOC);
 printf("<tr align='right'>
     <th>&nbsp;</th>
