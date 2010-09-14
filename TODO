@@ -7,8 +7,6 @@
   * da se napravi tablicata engine=innodb
   * da se napravi utf8 vmesto latin1
 
-* Da se napravi zelena strelkichkata po koqto e sortirano v momenta
-
 * Da se podravni boqna-accountancy.php ednakvo (consistency)
 
 * V boqna-accountancy.php da se mahnat intervalite ot kraq na redovete
@@ -18,12 +16,3 @@
   "func( x"
 
 * V PHP redovete da ne sa po-dylgi ot 80 coloni
-
-* Da se izvede tochnata greshka ako ne uspeqt: mysql_connect(),
-  mysql_select_db(), mysql_close()
-  Moje li mysql_fetch_array() da vryshta greshka?
-  Syobshteniqta za greski da bydat: "mysqlfunc(): error text", naprimer
-  "mysql_connect(): connect to 127.0.0.1:3306: connection refused"
-
-* Da se sortira po "Greenarea, month, Date" vmesto "Greenarea, Date"
-  (analogichno za ostanalite koloni)
