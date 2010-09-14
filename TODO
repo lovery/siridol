@@ -6,13 +6,3 @@
   * bez kolonata total
   * da se napravi tablicata engine=innodb
   * da se napravi utf8 vmesto latin1
-
-* Da se podravni boqna-accountancy.php ednakvo (consistency)
-
-* V boqna-accountancy.php da se mahnat intervalite ot kraq na redovete
-  (trailing whitespaces)
-
-* Izvikvaneto na vsichki funkcii da byde "func(x", a ne "func (x" ili
-  "func( x"
-
-* V PHP redovete da ne sa po-dylgi ot 80 coloni
