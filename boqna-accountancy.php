@@ -131,24 +131,33 @@ case 9:
 
 printf("<table class='tableBorder'>\n");
 printf("<tr>
-	<th><nobr>За месец<a href=?sort=1&type=asc><img src=".$name_img[0][0]." /></a>
-	<a href=?sort=1&type=desc><img src=".$name_img[0][1]." /></a></nobr></th>
-	<th><nobr>Дата<a href=?sort=2&type=asc><img src=".$name_img[1][0]." /></a>
-	<a href=?sort=2&type=desc><img src=".$name_img[1][1]." /></a></nobr></th>
-	<th><nobr>Смет<a href=?sort=3&type=asc><img src=".$name_img[2][0]." /></a>
-	<a href=?sort=3&type=desc><img src=".$name_img[2][1]." /></a><nobr></th>
-	<th>Зелени <nobr>площи<a href=?sort=4&type=asc><img src=".$name_img[3][0]." /></a>
-	<a href=?sort=4&type=desc><img src=".$name_img[3][1]." /></a></nobr></th>
-	<th><nobr>Домоупр.<a href=?sort=5&type=asc><img src=".$name_img[4][0]." /></a>
-	<a href=?sort=5&type=desc><img src=".$name_img[4][1]." /></a></nobr></th>
-	<th>Почист. <nobr>улици<a href=?sort=6&type=asc><img src=".$name_img[5][0]." /></a>
-	<a href=?sort=6&type=desc><img src=".$name_img[5][1]." /></a></nobr></th>
-	<th><nobr>Фонд<a href=?sort=7&type=asc><img src=".$name_img[6][0]." /></a>
-	<a href=?sort=7&type=desc><img src=".$name_img[6][1]." /></a></nobr></th>
-	<th><nobr>Общо<a href=?sort=8&type=asc><img src=".$name_img[7][0]." /></a>
-	<a href=?sort=8&type=desc><img src=".$name_img[7][1]." /></a></nobr></th>
-	<th><nobr>Пояснение<a href=?sort=9&type=asc><img src=".$name_img[8][0]." /></a>
-	<a href=?sort=9&type=desc><img src=".$name_img[8][1]." /></a></nobr></th>
+	<th><nobr>За месец<a href=?sort=1&type=asc><img
+	src=".$name_img[0][0]." /></a><a href=?sort=1&type=desc><img
+	src=".$name_img[0][1]." /></a></nobr></th>
+	<th><nobr>Дата<a href=?sort=2&type=asc><img
+	src=".$name_img[1][0]." /></a><a href=?sort=2&type=desc><img
+	src=".$name_img[1][1]." /></a></nobr></th>
+	<th><nobr>Смет<a href=?sort=3&type=asc><img
+	src=".$name_img[2][0]." /></a><a href=?sort=3&type=desc><img
+	src=".$name_img[2][1]." /></a><nobr></th>
+	<th>Зелени <nobr>площи<a href=?sort=4&type=asc><img
+	src=".$name_img[3][0]." /></a><a href=?sort=4&type=desc><img
+	src=".$name_img[3][1]." /></a></nobr></th>
+	<th><nobr>Домоупр.<a href=?sort=5&type=asc><img
+	src=".$name_img[4][0]." /></a><a href=?sort=5&type=desc><img
+	src=".$name_img[4][1]." /></a></nobr></th>
+	<th>Почист. <nobr>улици<a href=?sort=6&type=asc><img
+	src=".$name_img[5][0]." /></a><a href=?sort=6&type=desc><img
+	src=".$name_img[5][1]." /></a></nobr></th>
+	<th><nobr>Фонд<a href=?sort=7&type=asc><img
+	src=".$name_img[6][0]." /></a><a href=?sort=7&type=desc><img
+	src=".$name_img[6][1]." /></a></nobr></th>
+	<th><nobr>Общо<a href=?sort=8&type=asc><img
+	src=".$name_img[7][0]." /></a><a href=?sort=8&type=desc><img
+	src=".$name_img[7][1]." /></a></nobr></th>
+	<th><nobr>Пояснение<a href=?sort=9&type=asc><img
+	src=".$name_img[8][0]." /></a><a href=?sort=9&type=desc><img
+	src=".$name_img[8][1]." /></a></nobr></th>
 	</tr>");
 
 $sql="SELECT date_format(Month, '%Y.%m') as month, date_format(Date, '%Y.%m.%d') as data,
