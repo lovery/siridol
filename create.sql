@@ -1,3 +1,4 @@
+drop table if exists `boqna`;
 CREATE TABLE `boqna` (
       `Month` date DEFAULT NULL,
       `Date` date DEFAULT NULL,
@@ -6,6 +7,5 @@ CREATE TABLE `boqna` (
       `homemanager` float(10,2) DEFAULT NULL,
       `cleanstreets` float(10,2) DEFAULT NULL,
       `fund` float(10,2) DEFAULT NULL,
-      `total` float(10,2) DEFAULT NULL,
       `explanation` varchar(150) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
