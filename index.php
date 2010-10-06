@@ -10,6 +10,8 @@
 <body bgcolor="#EEEEEE">
 <?php
 
+require 'dbinfo.php';
+
 function print_html_num_td($num) {
 	if ($num<0) {
 		printf("<td class=tdNegative>");
@@ -20,12 +22,12 @@ function print_html_num_td($num) {
 	printf("$num</td>\n");
 }
 
-$connect=mysql_connect("localhost", "root", "happypass");
+$connect=mysql_connect($db_host, $db_user, $db_pass);
 if (!$connect) {
 	die("mysql_connect: ".mysql_error()."<br/>");
 }
 
-$result=mysql_select_db("test");
+$result=mysql_select_db($db_name);
 if (!$result) {
 	die("mysql_select_db :".mysql_error()."<br/>");
 }
