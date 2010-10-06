@@ -41,6 +41,11 @@ for ($i=0; $i<9; $i++) {
 	$name_img[$i][1]="up_arrow_origin.png";
 }
 
+if (empty($_GET["sort"])) {
+	$_GET["sort"]=1;
+	$_GET["type"]="asc";
+}
+
 switch ($_GET["sort"]) {
 case 1:
 	if ($_GET["type"]=="asc") {
