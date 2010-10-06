@@ -247,3 +247,4 @@ if (!mysql_close($connect)) {
 ?>
 </body>
 </html>
+<!-- vim: set encoding=utf8: -->
