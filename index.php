@@ -168,7 +168,7 @@ $sql="SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%
 	Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from accountancy".$sqlpl;
 $sql_result=mysql_query($sql);
 if (!$sql_result) {
-	die("Mysql_query :".mysql_error()."<br/>");
+	die("mysql_query: ".mysql_error()."<br/>");
 }
 
 $is_date='ne e data';
@@ -211,7 +211,7 @@ $total_sql=mysql_query("select trub, tgreen, thome, tclean, tfund,
 	sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean,
 	sum(fund) as tfund from accountancy) as tab");
 if (!$total_sql) {
-	die( "Mysql_query :".mysql_error()."<br/>");
+	die( "mysql_query: ".mysql_error()."<br/>");
 }
 
 if ($_GET["insert"]=="5") {
