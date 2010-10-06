@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `boqna`;
 CREATE TABLE `boqna` (
 	`month` DATE NOT NULL,
-	`date` DATE NOT NULL,
+	`on_date` DATE NOT NULL,
 	`rubbish` FLOAT(10,2) NOT NULL,
 	`greenarea` FLOAT(10,2) NOT NULL,
 	`homemanager` FLOAT(10,2) NOT NULL,
