@@ -245,7 +245,7 @@ printf("<tr align='right'>
 	<th>&nbsp;</th>
 	</tr>\n");
 printf("</table>\n");
-printf("<form onclick=?insert=5 method='get'><input type='submit' name='insert' value='Добавяне'/></form>\n");
+// printf("<form onclick=?insert=5 method='get'><input type='submit' name='insert' value='Добавяне'/></form>\n");
 
 if (!mysql_close($connect)) {
 	die("There is a problem with closing the connection<br/>");
