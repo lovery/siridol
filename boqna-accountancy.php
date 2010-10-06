@@ -5,14 +5,6 @@
 <title>
 Счетоводство на комплекса
 </title>
-<script type="text/javascript">
-function add_row() {
-	document.getElementById("insert").style.display="block";
-}
-function remove_row() {
-	document.getElementById("insert").style.display="none";
-}
-</script>
 </head>
 
 <body bgcolor="#EEEEEE">
@@ -220,18 +212,19 @@ if (!$total_sql) {
 	die( "Mysql_query :".mysql_error()."<br/>");
 }
 
-printf("<tr class=tableBorderAdd>
-	<td colspan=9><table class='add_row' id='insert'><tr><form>
-	<td><input type='text' size=7 name='month'/></td>
-	<td><input type='text' size=10 name='data_come'/></td>
-	<td><input type='text' size=8 name='rub'/></td>
-	<td><input type='text' size=8 name='area'/></td>
-	<td><input type='text' size=8 name='hman'/></td>
-	<td><input type='text' size=8 name='clean'/></td>
-	<td><input type='text' size=8 name='fund'/></td>
-	<td>&nbsp;</td>
-	<td><input type='text' size=30 name='explan'/></td>
-	</form></tr></table></td></tr>");
+if ($_GET["insert"]=="5") {
+	printf("<tr><form>
+		<td><input type='text' size=7 name='month'/></td>
+		<td><input type='text' size=10 name='data_come'/></td>
+		<td><input type='text' size=8 name='rub'/></td>
+		<td><input type='text' size=8 name='area'/></td>
+		<td><input type='text' size=8 name='hman'/></td>
+		<td><input type='text' size=8 name='clean'/></td>
+		<td><input type='text' size=8 name='fund'/></td>
+		<td>&nbsp;</td>
+		<td><input type='text' size=30 name='explan'/></td>
+		</form></tr>");
+}
 
 $total=mysql_fetch_array($total_sql, MYSQL_ASSOC);
 printf("<tr align='right'>
@@ -246,8 +239,7 @@ printf("<tr align='right'>
 	<th>&nbsp;</th>
 	</tr>\n");
 printf("</table>\n");
-printf("<input type='button' onclick='add_row()' value='Добавяне'/>\n");
-printf("<input type='button' onclick='remove_row()' value='Premahvane'/>\n");
+printf("<form onclick=?insert=5 method='get'><input type='submit' name='insert' value='Добавяне'/></form>\n");
 
 if (!mysql_close($connect)) {
 	die("There is a problem with closing the connection<br/>");
