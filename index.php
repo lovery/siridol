@@ -177,7 +177,7 @@ if (!$sql_result) {
 
 $is_date='ne e data';
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
-	if ($is_date!=$array[month] & $_GET["sort"]=="1" & $is_date!='ne e data') {
+	if ($is_date!=$array[month] && $_GET["sort"]=="1" && $is_date!='ne e data') {
 		printf("<tr>\n");
 		printf("<td class='nonegative' colspan=2>Общо за месец ".$is_date."</td>\n");
 		print_html_num_td($is_rub);
