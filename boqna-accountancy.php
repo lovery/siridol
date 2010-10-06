@@ -163,7 +163,7 @@ printf("<tr>
 
 $sql="SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data,
 	Rubbish, Greenarea, homemanager, cleanstreets, fund,
-	Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from boqna".$sqlpl;
+	Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from accountancy".$sqlpl;
 $sql_result=mysql_query($sql);
 if (!$sql_result) {
 	die("Mysql_query :".mysql_error()."<br/>");
@@ -207,7 +207,7 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 $total_sql=mysql_query("select trub, tgreen, thome, tclean, tfund,
 	trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub,
 	sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean,
-	sum(fund) as tfund from boqna) as tab");
+	sum(fund) as tfund from accountancy) as tab");
 if (!$total_sql) {
 	die( "Mysql_query :".mysql_error()."<br/>");
 }

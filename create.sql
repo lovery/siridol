@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `boqna`;
-CREATE TABLE `boqna` (
+DROP TABLE IF EXISTS `accountancy`;
+CREATE TABLE `accountancy` (
 	`month` DATE NOT NULL,
 	`on_date` DATE NOT NULL,
 	`rubbish` FLOAT(10,2) NOT NULL,
