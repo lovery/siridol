@@ -27,6 +27,10 @@ if (!$connect) {
 	die("mysql_connect: ".mysql_error()."<br/>");
 }
 
+if (!mysql_set_charset('utf8')) {
+	die("mysql_set_charset: ".mysql_error()."<br/>");
+}
+
 $result=mysql_select_db($db_name);
 if (!$result) {
 	die("mysql_select_db: ".mysql_error()."<br/>");
