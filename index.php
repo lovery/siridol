@@ -29,7 +29,7 @@ if (!$connect) {
 
 $result=mysql_select_db($db_name);
 if (!$result) {
-	die("mysql_select_db :".mysql_error()."<br/>");
+	die("mysql_select_db: ".mysql_error()."<br/>");
 }
 
 for ($i=0; $i<9; $i++) {
