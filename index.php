@@ -49,83 +49,83 @@ if (empty($_GET["sort"])) {
 switch ($_GET["sort"]) {
 case 1:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by Month, on_date";
+		$sqlpl=" order by Month, on_date, explanation";
 		$name_img[0][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by Month DESC, on_date";
+		$sqlpl=" order by Month DESC, on_date, explanation";
 		$name_img[0][1]="up_arrow.png";
 	}
 	break;
 case 2:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by on_date, Month";
+		$sqlpl=" order by on_date, Month, explanation";
 		$name_img[1][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by on_date DESC, Month";
+		$sqlpl=" order by on_date DESC, Month, explanation";
 		$name_img[1][1]="up_arrow.png";
 	}
 	break;
 case 3:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by Rubbish, Month, on_date";
+		$sqlpl=" order by Rubbish, Month, on_date, explanation";
 		$name_img[2][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by Rubbish DESC, Month, on_date";
+		$sqlpl=" order by Rubbish DESC, Month, on_date, explanation";
 		$name_img[2][1]="up_arrow.png";
 	}
 	break;
 case 4:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by Greenarea, Month, on_date";
+		$sqlpl=" order by Greenarea, Month, on_date, explanation";
 		$name_img[3][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by Greenarea DESC, Month, on_date";
+		$sqlpl=" order by Greenarea DESC, Month, on_date, explanation";
 		$name_img[3][1]="up_arrow.png";
 	}
 	break;
 case 5:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by homemanager, Month, on_date";
+		$sqlpl=" order by homemanager, Month, on_date, explanation";
 		$name_img[4][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by homemanager DESC, Month, on_date";
+		$sqlpl=" order by homemanager DESC, Month, on_date, explanation";
 		$name_img[4][1]="up_arrow.png";
 	}
 	break;
 case 6:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by cleanstreets, Month, on_date";
+		$sqlpl=" order by cleanstreets, Month, on_date, explanation";
 		$name_img[5][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by cleanstreets DESC, Month, on_date";
+		$sqlpl=" order by cleanstreets DESC, Month, on_date, explanation";
 		$name_img[5][1]="up_arrow.png";
 	}
 	break;
 case 7:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by fund, Month, on_date";
+		$sqlpl=" order by fund, Month, on_date, explanation";
 		$name_img[6][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by fund DESC, Month, on_date";
+		$sqlpl=" order by fund DESC, Month, on_date, explanation";
 		$name_img[6][1]="up_arrow.png";
 	}
 	break;
 case 8:
 	if ($_GET["type"]=="asc") {
 		$sqlpl=" order by Rubbish+Greenarea+homemanager+cleanstreets+fund,
-		       Month, on_date";
+		       Month, on_date, explanation";
 		$name_img[7][0]="down_arrow.png";
 	}
 	else {
 		$sqlpl=" order by Rubbish+Greenarea+homemanager+cleanstreets+fund DESC,
-			Month, on_date";
+			Month, on_date, explanation";
 		$name_img[7][1]="up_arrow.png";
 	}
 	break;
@@ -143,7 +143,7 @@ case 9:
 
 printf("<table class='tableBorder'>\n");
 printf("<tr>
-	<th class='width_td'><nobr>За месец<a href=?sort=1&type=asc><img
+	<th class='width_td'><nobr>За<br/>месец<a href=?sort=1&type=asc><img
 	src=".$name_img[0][0]." /></a><a href=?sort=1&type=desc><img
 	src=".$name_img[0][1]." /></a></nobr></th>
 	<th class='width_td'><nobr>Дата<a href=?sort=2&type=asc><img
