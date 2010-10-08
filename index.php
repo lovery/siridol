@@ -14,12 +14,12 @@ require 'dbinfo.php';
 
 function print_html_num_td($num) {
 	if ($num<0) {
-		printf("<td class=tdNegative>");
+		$class="tdNegative";
 	}
 	else {
-		printf("<td class=tdNONegative>");
+		$class="tdNONegative";
 	}
-	printf("%.2f</td>\n", $num);
+	printf("<td class='$class'>%.2f</td>\n", $num);
 }
 
 $connect=mysql_connect($db_host, $db_user, $db_pass);
