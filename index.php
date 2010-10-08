@@ -215,6 +215,17 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	$is_date=$array[month];
 }
 
+printf("<tr class=tr_total>\n");
+printf("<td class='nonegative' colspan=2><b>Общо за ".$is_date."</b></td>\n");
+print_html_num_td($is_rub);
+print_html_num_td($is_green);
+print_html_num_td($is_home);
+print_html_num_td($is_clean);
+print_html_num_td($is_fund);
+print_html_num_td($is_total);
+printf("<td>&nbsp;</td>\n");
+printf("</tr>\n");
+
 $total_sql=mysql_query("select trub, tgreen, thome, tclean, tfund,
 	trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub,
 	sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean,
