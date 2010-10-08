@@ -19,7 +19,7 @@ function print_html_num_td($num) {
 	else {
 		printf("<td class=tdNONegative>");
 	}
-	printf("$num</td>\n");
+	printf("%.2f</td>\n", $num);
 }
 
 $connect=mysql_connect($db_host, $db_user, $db_pass);
