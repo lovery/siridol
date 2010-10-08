@@ -12,7 +12,7 @@
 
 require 'dbinfo.php';
 
-function print_html_num_td($num) {
+function print_html_td_money($num) {
 	if ($num<0) {
 		$class="tdNegative";
 	}
@@ -185,12 +185,12 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	if ($is_date!=$array[month] && $_GET["sort"]=="1" && $is_date!='ne e data') {
 		printf("<tr class=tr_total>\n");
 		printf("<td class='nonegative' colspan=2><b>Общо за ".$is_date."</b></td>\n");
-		print_html_num_td($is_rub);
-		print_html_num_td($is_green);
-		print_html_num_td($is_home);
-		print_html_num_td($is_clean);
-		print_html_num_td($is_fund);
-		print_html_num_td($is_total);
+		print_html_td_money($is_rub);
+		print_html_td_money($is_green);
+		print_html_td_money($is_home);
+		print_html_td_money($is_clean);
+		print_html_td_money($is_fund);
+		print_html_td_money($is_total);
 		printf("<td>&nbsp;</td>\n");
 		printf("</tr>\n");
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
@@ -198,17 +198,17 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	printf("<tr>\n");
 	printf("<td>$array[month]</td>\n");
 	printf("<td>$array[data]</td>\n");
-	print_html_num_td($array[Rubbish]);
+	print_html_td_money($array[Rubbish]);
 	$is_rub+=$array[Rubbish];
-	print_html_num_td($array[Greenarea]);
+	print_html_td_money($array[Greenarea]);
 	$is_green+=$array[Greenarea];
-	print_html_num_td($array[homemanager]);
+	print_html_td_money($array[homemanager]);
 	$is_home+=$array[homemanager];
-	print_html_num_td($array[cleanstreets]);
+	print_html_td_money($array[cleanstreets]);
 	$is_clean+=$array[cleanstreets];
-	print_html_num_td($array[fund]);
+	print_html_td_money($array[fund]);
 	$is_fund+=$array[fund];
-	print_html_num_td($array[total]);
+	print_html_td_money($array[total]);
 	$is_total+=$array[total];
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
 	printf("</tr>\n");
