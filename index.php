@@ -22,6 +22,21 @@ function print_html_td_money($num) {
 	printf("<td class='$class'>%.2f</td>\n", $num);
 }
 
+function print_html_tr_month_total($month, $rub, $green, $home, $clean,
+	$fund, $total) {
+
+	printf("<tr class='tr_total'>\n");
+	printf("<td class='nonegative' colspan=2><b>Общо за $month</b></td>\n");
+	print_html_td_money($rub);
+	print_html_td_money($green);
+	print_html_td_money($home);
+	print_html_td_money($clean);
+	print_html_td_money($fund);
+	print_html_td_money($total);
+	printf("<td>&nbsp;</td>\n");
+	printf("</tr>\n");
+}
+
 $connect=mysql_connect($db_host, $db_user, $db_pass);
 if (!$connect) {
 	die("mysql_connect: ".mysql_error()."<br/>");
@@ -183,16 +198,10 @@ if (!$sql_result) {
 $is_date='ne e data';
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	if ($is_date!=$array[month] && $_GET["sort"]=="1" && $is_date!='ne e data') {
-		printf("<tr class=tr_total>\n");
-		printf("<td class='nonegative' colspan=2><b>Общо за ".$is_date."</b></td>\n");
-		print_html_td_money($is_rub);
-		print_html_td_money($is_green);
-		print_html_td_money($is_home);
-		print_html_td_money($is_clean);
-		print_html_td_money($is_fund);
-		print_html_td_money($is_total);
-		printf("<td>&nbsp;</td>\n");
-		printf("</tr>\n");
+
+		print_html_tr_month_total($is_date, $is_rub, $is_green,
+			$is_home, $is_clean, $is_fund, $is_total);
+
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 	}
 	printf("<tr>\n");
@@ -214,6 +223,9 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	printf("</tr>\n");
 	$is_date=$array[month];
 }
+
+print_html_tr_month_total($is_date, $is_rub, $is_green, $is_home, $is_clean,
+	$is_fund, $is_total);
 
 $total_sql=mysql_query("select trub, tgreen, thome, tclean, tfund,
 	trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub,
