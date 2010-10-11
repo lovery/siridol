@@ -201,8 +201,9 @@ if (!$sql_result) {
 }
 
 $is_date='ne e data';
+$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
-	if ($is_date!=$array[month] && $_GET["sort"]=="1" && $is_date!='ne e data') {
+	if ($is_date!=$array['month'] && $_GET["sort"]=="1" && $is_date!='ne e data') {
 
 		print_html_tr_month_total($is_date, $is_rub, $is_green,
 			$is_home, $is_clean, $is_fund, $is_total);
@@ -214,21 +215,21 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	printf("<tr>\n");
 	printf("<td>$array[month]</td>\n");
 	printf("<td>$array[data]</td>\n");
-	print_html_td_money($array[Rubbish]);
-	$is_rub+=$array[Rubbish];
-	print_html_td_money($array[Greenarea]);
-	$is_green+=$array[Greenarea];
-	print_html_td_money($array[homemanager]);
-	$is_home+=$array[homemanager];
-	print_html_td_money($array[cleanstreets]);
-	$is_clean+=$array[cleanstreets];
-	print_html_td_money($array[fund]);
-	$is_fund+=$array[fund];
-	print_html_td_money($array[total]);
-	$is_total+=$array[total];
+	print_html_td_money($array['Rubbish']);
+	$is_rub+=$array['Rubbish'];
+	print_html_td_money($array['Greenarea']);
+	$is_green+=$array['Greenarea'];
+	print_html_td_money($array['homemanager']);
+	$is_home+=$array['homemanager'];
+	print_html_td_money($array['cleanstreets']);
+	$is_clean+=$array['cleanstreets'];
+	print_html_td_money($array['fund']);
+	$is_fund+=$array['fund'];
+	print_html_td_money($array['total']);
+	$is_total+=$array['total'];
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
 	printf("</tr>\n");
-	$is_date=$array[month];
+	$is_date=$array['month'];
 }
 
 print_html_tr_month_total($is_date, $is_rub, $is_green, $is_home, $is_clean,
@@ -242,7 +243,7 @@ if (!$total_sql) {
 	die( "mysql_query: ".mysql_error()."<br/>");
 }
 
-if ($_GET["insert"]=="5") {
+if (isset($_GET["insert"]) && $_GET["insert"]=="5") {
 	printf("<tr><form>
 		<td><input type='text' size=7 name='month'/></td>
 		<td><input type='text' size=10 name='data_come'/></td>
