@@ -257,6 +257,10 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 		print_html_tr_month_total($is_date, $is_rub, $is_green,
 			$is_home, $is_clean, $is_fund, $is_total);
 
+		printf("<tr>\n".
+			"<th colspan=9 align=center>$array[month]</td>\n".
+			"</tr>");
+
 		print_html_th($name_img, 0);
 
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
