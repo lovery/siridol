@@ -37,6 +37,39 @@ function print_html_tr_month_total($month, $rub, $green, $home, $clean,
 	printf("</tr>\n");
 }
 
+function print_html_th($name_img) {
+
+	printf("<tr>
+	<th class='width_td'><nobr>За<br/>месец<a href=?sort=1&type=asc><img
+	src=".$name_img[0][0]." /></a><a href=?sort=1&type=desc><img
+	src=".$name_img[0][1]." /></a></nobr></th>
+	<th class='width_td'><nobr>Дата<a href=?sort=2&type=asc><img
+	src=".$name_img[1][0]." /></a><a href=?sort=2&type=desc><img
+	src=".$name_img[1][1]." /></a></nobr></th>
+	<th class='width_td'><nobr>Смет<a href=?sort=3&type=asc><img
+	src=".$name_img[2][0]." /></a><a href=?sort=3&type=desc><img
+	src=".$name_img[2][1]." /></a><nobr></th>
+	<th class='width_td'>Зелени <nobr>площи<a href=?sort=4&type=asc><img
+	src=".$name_img[3][0]." /></a><a href=?sort=4&type=desc><img
+	src=".$name_img[3][1]." /></a></nobr></th>
+	<th class='width_td'><nobr>Домоупр.<a href=?sort=5&type=asc><img
+	src=".$name_img[4][0]." /></a><a href=?sort=5&type=desc><img
+	src=".$name_img[4][1]." /></a></nobr></th>
+	<th class='width_td'>Почист. <nobr>улици<a href=?sort=6&type=asc><img
+	src=".$name_img[5][0]." /></a><a href=?sort=6&type=desc><img
+	src=".$name_img[5][1]." /></a></nobr></th>
+	<th class='width_td'><nobr>Фонд<a href=?sort=7&type=asc><img
+	src=".$name_img[6][0]." /></a><a href=?sort=7&type=desc><img
+	src=".$name_img[6][1]." /></a></nobr></th>
+	<th class='width_td'><nobr>Общо<a href=?sort=8&type=asc><img
+	src=".$name_img[7][0]." /></a><a href=?sort=8&type=desc><img
+	src=".$name_img[7][1]." /></a></nobr></th>
+	<th><nobr>Пояснение<a href=?sort=9&type=asc><img
+	src=".$name_img[8][0]." /></a><a href=?sort=9&type=desc><img
+	src=".$name_img[8][1]." /></a></nobr></th>
+	</tr>");
+}
+
 $connect=mysql_connect($db_host, $db_user, $db_pass);
 if (!$connect) {
 	die("mysql_connect: ".mysql_error()."<br/>");
@@ -157,35 +190,7 @@ case 9:
 };
 
 printf("<table class='tableBorder'>\n");
-printf("<tr>
-	<th class='width_td'><nobr>За<br/>месец<a href=?sort=1&type=asc><img
-	src=".$name_img[0][0]." /></a><a href=?sort=1&type=desc><img
-	src=".$name_img[0][1]." /></a></nobr></th>
-	<th class='width_td'><nobr>Дата<a href=?sort=2&type=asc><img
-	src=".$name_img[1][0]." /></a><a href=?sort=2&type=desc><img
-	src=".$name_img[1][1]." /></a></nobr></th>
-	<th class='width_td'><nobr>Смет<a href=?sort=3&type=asc><img
-	src=".$name_img[2][0]." /></a><a href=?sort=3&type=desc><img
-	src=".$name_img[2][1]." /></a><nobr></th>
-	<th class='width_td'>Зелени <nobr>площи<a href=?sort=4&type=asc><img
-	src=".$name_img[3][0]." /></a><a href=?sort=4&type=desc><img
-	src=".$name_img[3][1]." /></a></nobr></th>
-	<th class='width_td'><nobr>Домоупр.<a href=?sort=5&type=asc><img
-	src=".$name_img[4][0]." /></a><a href=?sort=5&type=desc><img
-	src=".$name_img[4][1]." /></a></nobr></th>
-	<th class='width_td'>Почист. <nobr>улици<a href=?sort=6&type=asc><img
-	src=".$name_img[5][0]." /></a><a href=?sort=6&type=desc><img
-	src=".$name_img[5][1]." /></a></nobr></th>
-	<th class='width_td'><nobr>Фонд<a href=?sort=7&type=asc><img
-	src=".$name_img[6][0]." /></a><a href=?sort=7&type=desc><img
-	src=".$name_img[6][1]." /></a></nobr></th>
-	<th class='width_td'><nobr>Общо<a href=?sort=8&type=asc><img
-	src=".$name_img[7][0]." /></a><a href=?sort=8&type=desc><img
-	src=".$name_img[7][1]." /></a></nobr></th>
-	<th><nobr>Пояснение<a href=?sort=9&type=asc><img
-	src=".$name_img[8][0]." /></a><a href=?sort=9&type=desc><img
-	src=".$name_img[8][1]." /></a></nobr></th>
-	</tr>");
+print_html_th($name_img);
 
 $sql="SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data,
 	Rubbish, Greenarea, homemanager, cleanstreets, fund,
@@ -201,6 +206,8 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 
 		print_html_tr_month_total($is_date, $is_rub, $is_green,
 			$is_home, $is_clean, $is_fund, $is_total);
+
+		print_html_th($name_img);
 
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 	}
