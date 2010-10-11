@@ -116,7 +116,7 @@ function print_html_th($name_img, $print_sort_arrows) {
 		"<th class='width_td'><nobr>Фонд$fund_arrows</nobr></th>\n".
 		"<th class='width_td'><nobr>Общо$total_arrows</nobr></th>\n".
 		"<th><nobr>Пояснение$descr_arrows</nobr></th>\n".
-		"</tr>");
+		"</tr>\n");
 }
 
 $connect=mysql_connect($db_host, $db_user, $db_pass);
