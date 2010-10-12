@@ -258,7 +258,7 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 			$is_home, $is_clean, $is_fund, $is_total);
 
 		printf("<tr>\n".
-			"<th colspan=9 align=center>$array[month]</td>\n".
+			"<th colspan=9 align=center>Отчет за $array[month]</td>\n".
 			"</tr>");
 
 		print_html_th($name_img, 0);
