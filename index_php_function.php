@@ -104,12 +104,14 @@ function print_html_th($name_img, $print_sort_arrows) {
 		"</tr>\n");
 }
 
-function print_not_payed($is_payed, $array_id_house, $size_id_house, $current_month) {
+function print_not_payed($is_paid, $array_id_house, $current_month) {
 	$i=0;
-	while ($i < $size_id_house) {
-		if (!isset($is_payed[$array_id_house[$i]['ID']])) {
+	$size_id_house=count($array_id_house);
+	while ($i < $size_id_house-1) {
+		$id_payer=$array_id_house[$i]['ID'];
+		if (!isset($is_paid[$id_payer])) {
 			if ($current_month >= $array_id_house[$i]['month']) {
-				printf("<tr>\n".
+				printf("<tr class='no_payer'>\n".
 					"<td><nobr>$current_month</nobr></td>\n".
 					"<td colspan=7 align=center>Неплатено</td>\n".
 					"<td><nobr>".
@@ -120,7 +122,5 @@ function print_not_payed($is_payed, $array_id_house, $size_id_house, $current_mo
 		}
 		$i++;
 	}
-
-
 }
 ?>
