@@ -101,7 +101,6 @@ function print_html_th($name_img, $print_sort_arrows) {
 		"<th class='width_td'><nobr>Общо$total_arrows</nobr></th>\n".
 
 		"<th><nobr>Пояснение$descr_arrows</nobr></th>\n".
-		"<th><nobr>ID_houses</nobr></th>\n".
 		"</tr>\n");
 }
 

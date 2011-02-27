@@ -190,7 +190,6 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	print_html_td_money($array['total']);
 	$is_total+=$array['total'];
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
-	printf("<td><nobr>$array[id_house]</nobr></td>\n");
 	printf("</tr>\n");
 	$is_date=$array['month'];
 	$is_payed[$array['id_house']]=1;
@@ -236,8 +235,6 @@ printf("<tr align='right'>
 	<th>&nbsp;</th>
 	</tr>\n");
 printf("</table>\n");
-if ("2010.07" < "2010.09")
-	printf("hahaha\n");
 // printf("<form onclick=?insert=5 method='get'><input type='submit' name='insert' value='Добавяне'/></form>\n");
 
 if (!mysql_close($connect)) {
