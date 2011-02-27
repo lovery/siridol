@@ -12,112 +12,7 @@
 
 require 'dbinfo.php';
 
-function print_html_td_money($num) {
-	if ($num<0) {
-		$class="tdNegative";
-	}
-	else {
-		$class="tdNONegative";
-	}
-	printf("<td class='$class'>%.2f</td>\n", $num);
-}
-
-function print_html_tr_month_total($month, $rub, $green, $home, $clean,
-	$fund, $total) {
-
-	printf("<tr class='tr_total'>\n");
-	printf("<td class='nonegative' colspan=2><b>Общо за $month</b></td>\n");
-	print_html_td_money($rub);
-	print_html_td_money($green);
-	print_html_td_money($home);
-	print_html_td_money($clean);
-	print_html_td_money($fund);
-	print_html_td_money($total);
-	printf("<td>&nbsp;</td>\n");
-	printf("</tr>\n");
-}
-
-function print_html_th($name_img, $print_sort_arrows) {
-
-	if ($print_sort_arrows) {
-		$month_arrows=
-			"<a href=?sort=1&type=asc>".
-			"<img src=".$name_img[0][0]." /></a>".
-			"<a href=?sort=1&type=desc>".
-			"<img src=".$name_img[0][1]." /></a>";
-
-		$date_arrows=
-			"<a href=?sort=2&type=asc>".
-			"<img src=".$name_img[1][0]." /></a>".
-			"<a href=?sort=2&type=desc>".
-			"<img src=".$name_img[1][1]." /></a>";
-
-		$rubbish_arrows=
-			"<a href=?sort=3&type=asc>".
-			"<img src=".$name_img[2][0]." /></a>".
-			"<a href=?sort=3&type=desc>".
-			"<img src=".$name_img[2][1]." /></a>";
-
-		$greenarea_arrows=
-			"<a href=?sort=4&type=asc>".
-			"<img src=".$name_img[3][0]." /></a>".
-			"<a href=?sort=4&type=desc>".
-			"<img src=".$name_img[3][1]." /></a>";
-
-		$homemanager_arrows=
-			"<a href=?sort=5&type=asc>".
-			"<img src=".$name_img[4][0]." /></a>".
-			"<a href=?sort=5&type=desc>".
-			"<img src=".$name_img[4][1]." /></a>";
-
-		$cleanstreets_arrows=
-			"<a href=?sort=6&type=asc>".
-			"<img src=".$name_img[5][0]." /></a>".
-			"<a href=?sort=6&type=desc>".
-			"<img src=".$name_img[5][1]." /></a>";
-
-		$fund_arrows=
-			"<a href=?sort=7&type=asc>".
-			"<img src=".$name_img[6][0]." /></a>".
-			"<a href=?sort=7&type=desc>".
-			"<img src=".$name_img[6][1]." /></a>";
-
-		$total_arrows=
-			"<a href=?sort=8&type=asc>".
-			"<img src=".$name_img[7][0]." /></a>".
-			"<a href=?sort=8&type=desc>".
-			"<img src=".$name_img[7][1]." /></a>";
-
-		$descr_arrows=
-			"<a href=?sort=9&type=asc>".
-			"<img src=".$name_img[8][0]." /></a>".
-			"<a href=?sort=9&type=desc>".
-			"<img src=".$name_img[8][1]." /></a>";
-	}
-	else {
-		$month_arrows="";
-		$date_arrows="";
-		$rubbish_arrows="";
-		$greenarea_arrows="";
-		$homemanager_arrows="";
-		$cleanstreets_arrows="";
-		$fund_arrows="";
-		$total_arrows="";
-		$descr_arrows="";
-	}
-
-	printf("<tr>\n".
-		"<th class='width_td'><nobr>За<br/>месец$month_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Дата$date_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Смет$rubbish_arrows</nobr></th>\n".
-		"<th class='width_td'>Зелени <nobr>площи$greenarea_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Домоупр.$homemanager_arrows</nobr></th>\n".
-		"<th class='width_td'>Почист. <nobr>улици$cleanstreets_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Фонд$fund_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Общо$total_arrows</nobr></th>\n".
-		"<th><nobr>Пояснение$descr_arrows</nobr></th>\n".
-		"</tr>\n");
-}
+require 'index_php_function.php';
 
 $connect=mysql_connect($db_host, $db_user, $db_pass);
 if (!$connect) {
@@ -217,7 +112,7 @@ case 7:
 case 8:
 	if ($_GET["type"]=="asc") {
 		$sqlpl=" order by Rubbish+Greenarea+homemanager+cleanstreets+fund,
-		       Month, on_date, explanation";
+			Month, on_date, explanation";
 		$name_img[7][0]="down_arrow.png";
 	}
 	else {
@@ -243,22 +138,36 @@ print_html_th($name_img, 1);
 
 $sql="SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data,
 	Rubbish, Greenarea, homemanager, cleanstreets, fund,
-	Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation from accountancy".$sqlpl;
+	Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy".$sqlpl;
 $sql_result=mysql_query($sql);
 if (!$sql_result) {
 	die("mysql_query: ".mysql_error()."<br/>");
 }
+$sql_house_id="SElECT ID, date_format(Month, '%Y.%m') as month, explanation  FROM Id_house;";
+$sql_res_house_id=mysql_query($sql_house_id);
+if (!$sql_res_house_id) {
+	die("mysql_query: ".mysql_error()."<br/>");
+}
+$index_array_id_house=0;
+while ($array_id_house[$index_array_id_house]=mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) {
+	$index_array_id_house++;
+}
 
 $is_date='ne e data';
+$is_payed=array();
+unset($is_payed);
 $is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	if ($is_date!=$array['month'] && $_GET["sort"]=="1" && $is_date!='ne e data') {
+		print_not_payed($is_payed, $array_id_house,
+			$index_array_id_house, $is_date);
+		unset($is_payed);
 
 		print_html_tr_month_total($is_date, $is_rub, $is_green,
 			$is_home, $is_clean, $is_fund, $is_total);
 
 		printf("<tr>\n".
-			"<th colspan=9 align=center>Отчет за $array[month]</td>\n".
+			"<th colspan=9 align=center>Отчет за $array[month]</th>\n".
 			"</tr>");
 
 		print_html_th($name_img, 0);
@@ -281,10 +190,14 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	print_html_td_money($array['total']);
 	$is_total+=$array['total'];
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
+	printf("<td><nobr>$array[id_house]</nobr></td>\n");
 	printf("</tr>\n");
 	$is_date=$array['month'];
+	$is_payed[$array['id_house']]=1;
 }
 
+print_not_payed($is_payed, $array_id_house,
+	$index_array_id_house, $is_date);
 print_html_tr_month_total($is_date, $is_rub, $is_green, $is_home, $is_clean,
 	$is_fund, $is_total);
 
@@ -323,11 +236,13 @@ printf("<tr align='right'>
 	<th>&nbsp;</th>
 	</tr>\n");
 printf("</table>\n");
+if ("2010.07" < "2010.09")
+	printf("hahaha\n");
 // printf("<form onclick=?insert=5 method='get'><input type='submit' name='insert' value='Добавяне'/></form>\n");
 
 if (!mysql_close($connect)) {
 	die("There is a problem with closing the connection<br/>");
 }
 ?>
-</body>
-</html>
+	</body>
+	</html>

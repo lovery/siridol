@@ -11,3 +11,12 @@ CREATE TABLE `accountancy` (
 	`explanation` VARCHAR(150) NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `accountancy` ADD `id_house` INT(5);
+
+DROP TABLE IF EXISTS `Id_house`;
+CREATE TABLE `Id_house` (
+	`ID` INT (5) NOT NULL,
+	`month` DATE NOT NULL,
+	`explanation` VARCHAR(150) NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
