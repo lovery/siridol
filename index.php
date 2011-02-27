@@ -143,25 +143,21 @@ $sql_result=mysql_query($sql);
 if (!$sql_result) {
 	die("mysql_query: ".mysql_error()."<br/>");
 }
-$sql_house_id="SElECT ID, date_format(Month, '%Y.%m') as month, explanation  FROM Id_house;";
+$sql_house_id="SELECT ID, date_format(Month, '%Y.%m') as month, explanation  FROM Id_house;";
 $sql_res_house_id=mysql_query($sql_house_id);
 if (!$sql_res_house_id) {
 	die("mysql_query: ".mysql_error()."<br/>");
 }
-$index_array_id_house=0;
-while ($array_id_house[$index_array_id_house]=mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) {
-	$index_array_id_house++;
+while ($array_id_house[]=mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) {
 }
 
 $is_date='ne e data';
-$is_payed=array();
-unset($is_payed);
+$is_paid=array();
 $is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	if ($is_date!=$array['month'] && $_GET["sort"]=="1" && $is_date!='ne e data') {
-		print_not_payed($is_payed, $array_id_house,
-			$index_array_id_house, $is_date);
-		unset($is_payed);
+		print_not_payed($is_paid, $array_id_house, $is_date);
+		unset($is_paid);
 
 		print_html_tr_month_total($is_date, $is_rub, $is_green,
 			$is_home, $is_clean, $is_fund, $is_total);
@@ -174,7 +170,12 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 	}
-	printf("<tr>\n");
+	if (strpos($array['explanation'], "непълно плащане")!=false) {
+		printf("<tr class='half_payer'>\n");
+	}
+	else {
+		printf("<tr>\n");
+	}
 	printf("<td>$array[month]</td>\n");
 	printf("<td>$array[data]</td>\n");
 	print_html_td_money($array['Rubbish']);
@@ -192,15 +193,16 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
 	printf("</tr>\n");
 	$is_date=$array['month'];
-	$is_payed[$array['id_house']]=1;
+	$is_paid[$array['id_house']]=1;
 }
 
-print_not_payed($is_payed, $array_id_house,
-	$index_array_id_house, $is_date);
-print_html_tr_month_total($is_date, $is_rub, $is_green, $is_home, $is_clean,
-	$is_fund, $is_total);
+if ($_GET["sort"]=="1") {
+	print_not_payed($is_paid, $array_id_house, $is_date);
+	print_html_tr_month_total($is_date, $is_rub, $is_green, $is_home, $is_clean,
+		$is_fund, $is_total);
+}
 
-$total_sql=mysql_query("select trub, tgreen, thome, tclean, tfund,
+$total_sql=mysql_query("SELECT trub, tgreen, thome, tclean, tfund,
 	trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub,
 	sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean,
 	sum(fund) as tfund from accountancy) as tab");
@@ -241,5 +243,5 @@ if (!mysql_close($connect)) {
 	die("There is a problem with closing the connection<br/>");
 }
 ?>
-	</body>
-	</html>
+</body>
+</html>
