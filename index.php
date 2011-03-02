@@ -170,12 +170,7 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 	}
-	if (strpos($array['explanation'], "непълно плащане")!=false) {
-		printf("<tr class='half_payer'>\n");
-	}
-	else {
-		printf("<tr>\n");
-	}
+	printf("<tr>\n");
 	printf("<td>$array[month]</td>\n");
 	printf("<td>$array[data]</td>\n");
 	print_html_td_money($array['Rubbish']);
@@ -193,7 +188,12 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
 	printf("</tr>\n");
 	$is_date=$array['month'];
-	$is_paid[$array['id_house']]=1;
+	if (strpos($array['explanation'], "непълно плащане")!=false) {
+		$is_paid[$array['id_house']]=2;
+	}
+	else {
+		$is_paid[$array['id_house']]=1;
+	}
 }
 
 if ($_GET["sort"]=="1") {

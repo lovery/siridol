@@ -120,6 +120,17 @@ function print_not_payed($is_paid, $array_id_house, $current_month) {
 					"</tr>");
 			}
 		}
+		else {
+			if ($is_paid[$id_payer]==2) {
+				printf("<tr class='no_payer'>\n".
+					"<td><nobr>$current_month</nobr></td>\n".
+					"<td colspan=7 align=center>Има за доплащане</td>\n".
+					"<td><nobr>".
+					$array_id_house[$i]['explanation'].
+					"</th>\n".
+					"</tr>");
+			}
+		}
 		$i++;
 	}
 }
