@@ -151,6 +151,7 @@ if (!$sql_res_house_id) {
 while ($array_id_house[]=mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) {
 }
 
+date_default_timezone_set('Europe/Helsinki');
 $is_date='ne e data';
 $is_paid=array();
 $is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
