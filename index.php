@@ -159,8 +159,10 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 		print_not_payed($is_paid, $array_id_house, $is_date);
 		unset($is_paid);
 
-		print_html_tr_month_total($is_date, $is_rub, $is_green,
-			$is_home, $is_clean, $is_fund, $is_total);
+		if ($is_date <= date("Y,m")) {
+			print_html_tr_month_total($is_date, $is_rub, $is_green,
+				$is_home, $is_clean, $is_fund, $is_total);
+		}
 
 		printf("<tr>\n".
 			"<th colspan=9 align=center>Отчет за $array[month]</th>\n".
@@ -197,9 +199,10 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 }
 
 if ($_GET["sort"]=="1") {
-	print_not_payed($is_paid, $array_id_house, $is_date);
-	print_html_tr_month_total($is_date, $is_rub, $is_green, $is_home, $is_clean,
-		$is_fund, $is_total);
+	if ($is_date <= date("Y,m")) {
+		print_html_tr_month_total($is_date, $is_rub, $is_green,
+			$is_home, $is_clean, $is_fund, $is_total);
+	}
 }
 
 $total_sql=mysql_query("SELECT trub, tgreen, thome, tclean, tfund,
