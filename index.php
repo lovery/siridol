@@ -156,13 +156,13 @@ $is_paid=array();
 $is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	if ($is_date!=$array['month'] && $_GET["sort"]=="1" && $is_date!='ne e data') {
-		print_not_payed($is_paid, $array_id_house, $is_date);
+		if ($is_date <= date("Y.m")) {
+			print_not_payed($is_paid, $array_id_house, $is_date);
+		}
 		unset($is_paid);
 
-		if ($is_date <= date("Y,m")) {
-			print_html_tr_month_total($is_date, $is_rub, $is_green,
-				$is_home, $is_clean, $is_fund, $is_total);
-		}
+		print_html_tr_month_total($is_date, $is_rub, $is_green,
+			$is_home, $is_clean, $is_fund, $is_total);
 
 		printf("<tr>\n".
 			"<th colspan=9 align=center>Отчет за $array[month]</th>\n".
@@ -199,10 +199,12 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 }
 
 if ($_GET["sort"]=="1") {
-	if ($is_date <= date("Y,m")) {
-		print_html_tr_month_total($is_date, $is_rub, $is_green,
-			$is_home, $is_clean, $is_fund, $is_total);
+	if ($is_date <= date("Y.m")) {
+		print_not_payed($is_paid, $array_id_house, $is_date);
 	}
+
+	print_html_tr_month_total($is_date, $is_rub, $is_green,
+		$is_home, $is_clean, $is_fund, $is_total);
 }
 
 $total_sql=mysql_query("SELECT trub, tgreen, thome, tclean, tfund,
