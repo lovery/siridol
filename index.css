@@ -12,3 +12,4 @@ img {border-width:0;}
 .add_row TBODY TR TD {padding:0px; border-left:1px; border-top:0px; border-bottom:0px; border-right:0px; border-color:#000000;}
 .no_payer {background-color:#FFBBBB;}
 .half_payer {background-color:#FFBBBB;}
+.input_num {text-align:right;}
