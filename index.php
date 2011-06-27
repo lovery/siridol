@@ -1,13 +1,13 @@
 <html>
 <head>
-<meta http-equiv = "Content-Type" content = "text/html; charset = UTF-8">
-<link rel = "stylesheet" type = "text/css" href = "index.css">
+<meta http-equiv="Content-Type" content="text/html; charset = UTF-8">
+<link rel="stylesheet" type="text/css" href="index.css">
 <title>
 Счетоводство на комплекса
 </title>
 </head>
 
-<body bgcolor = "#EEEEEE">
+<body bgcolor="#EEEEEE">
 <?php
 
 require 'dbinfo.php';
