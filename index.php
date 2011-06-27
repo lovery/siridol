@@ -133,7 +133,7 @@ case 9:
 	break;
 };
 
-printf("<table class = 'tableBorder'>\n");
+printf("<table class='tableBorder'>\n");
 print_html_th($name_img, 1);
 
 $sql = "SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data,
