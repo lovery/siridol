@@ -154,14 +154,16 @@ while ($array_id_house[]=mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) {
 date_default_timezone_set('Europe/Helsinki');
 $is_date='ne e data';
 $is_paid=array();
+$total_befor;
 $is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
-	if ($is_date!=$array['month'] && $_GET["sort"]=="1" && $is_date!='ne e data') {
+	if ((($is_date!=$array['month'] && $is_date!='ne e data' && $total_before>0) || ($array['total']<=0 && $total_befor>0)) && $_GET["sort"]=="1" ) {
 		if ($is_date <= date("Y.m")) {
 			print_not_payed($is_paid, $array_id_house, $is_date);
 		}
 		unset($is_paid);
-
+	}
+	if ($is_date!=$array['month'] && $is_date!='ne e data' && $_GET["sort"]=="1" ) {
 		print_html_tr_month_total($is_date, $is_rub, $is_green,
 			$is_home, $is_clean, $is_fund, $is_total);
 
@@ -173,6 +175,7 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 
 		$is_rub=$is_green=$is_home=$is_clean=$is_fund=$is_total=0;
 	}
+
 	printf("<tr>\n");
 	printf("<td>$array[month]</td>\n");
 	printf("<td>$array[data]</td>\n");
@@ -190,13 +193,14 @@ while ($array=mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 	$is_total+=$array['total'];
 	printf("<td><nobr>$array[explanation]</nobr></td>\n");
 	printf("</tr>\n");
-	$is_date=$array['month'];
 	if (strpos($array['explanation'], "непълно плащане")!=false) {
 		$is_paid[$array['id_house']]=2;
 	}
 	else {
 		$is_paid[$array['id_house']]=1;
 	}
+	$is_date=$array['month'];
+	$total_befor=$array['total'];
 }
 
 if ($_GET["sort"]=="1") {
@@ -243,7 +247,6 @@ printf("<tr align='right'>
 	<th>&nbsp;</th>
 	</tr>\n");
 printf("</table>\n");
-// printf("<form onclick=?insert=5 method='get'><input type='submit' name='insert' value='Добавяне'/></form>\n");
 
 if (!mysql_close($connect)) {
 	die("There is a problem with closing the connection<br/>");
