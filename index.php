@@ -221,20 +221,20 @@ if (!$total_sql) {
 
 if (isset($_GET["insert"]) && $_GET["insert"] == "5") {
 	printf("<tr><form>
-		<td><input type = 'text' size = 7 name = 'month'/></td>
-		<td><input type = 'text' size = 10 name = 'data_come'/></td>
-		<td><input type = 'text' size = 8 name = 'rub'/></td>
-		<td><input type = 'text' size = 8 name = 'area'/></td>
-		<td><input type = 'text' size = 8 name = 'hman'/></td>
-		<td><input type = 'text' size = 8 name = 'clean'/></td>
-		<td><input type = 'text' size = 8 name = 'fund'/></td>
+		<td><input type='text' size=7 name='month'/></td>
+		<td><input type='text' size=10 name='data_come'/></td>
+		<td><input type='text' size=8 name='rub'/></td>
+		<td><input type='text' size=8 name='area'/></td>
+		<td><input type='text' size=8 name='hman'/></td>
+		<td><input type='text' size=8 name='clean'/></td>
+		<td><input type='text' size=8 name='fund'/></td>
 		<td>&nbsp;</td>
-		<td><input type = 'text' size = 30 name = 'explan'/></td>
+		<td><input type='text' size=30 name='explan'/></td>
 		</form></tr>");
 }
 
 $total = mysql_fetch_array($total_sql, MYSQL_ASSOC);
-printf("<tr align = 'right'>
+printf("<tr align='right'>
 	<th>&nbsp;</th>
 	<th>Общо:</th>
 	<th>$total[trub]</th>
