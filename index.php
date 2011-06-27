@@ -41,11 +41,11 @@ if (empty($_GET["sort"])) {
 switch ($_GET["sort"]) {
 case 1:
 	if ($_GET["type"]=="asc") {
-		$sqlpl=" order by Month, on_date, explanation";
+		$sqlpl=" order by Month, total < 0, explanation, on_date";
 		$name_img[0][0]="down_arrow.png";
 	}
 	else {
-		$sqlpl=" order by Month DESC, on_date, explanation";
+		$sqlpl=" order by Month DESC, total < 0, explanation, on_date";
 		$name_img[0][1]="up_arrow.png";
 	}
 	break;
