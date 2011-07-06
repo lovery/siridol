@@ -203,10 +203,6 @@ while ($array = mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
 }
 
 if ($_GET["sort"] == "1") {
-	if ($is_date <=  date("Y.m")) {
-		print_not_payed($is_paid, $array_id_house, $is_date);
-	}
-
 	print_html_tr_month_total($is_date, $is_rub, $is_green,
 		$is_home, $is_clean, $is_fund, $is_total);
 }
