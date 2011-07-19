@@ -9,30 +9,19 @@
 
 <body bgcolor="#EEEEEE">
 <?php
-
 require 'dbinfo.php';
-
 require 'index_php_function.php';
 
 $connect = mysql_connect($db_host, $db_user, $db_pass);
-if (!$connect) {
-	die("mysql_connect: ".mysql_error()."<br/>");
-}
-
-if (!mysql_set_charset('utf8')) {
-	die("mysql_set_charset: ".mysql_error()."<br/>");
-}
-
+if (!$connect) { die("mysql_connect: ".mysql_error()."<br/>"); }
+if (!mysql_set_charset('utf8')) { die("mysql_set_charset: ".mysql_error()."<br/>"); }
 $result = mysql_select_db($db_name);
-if (!$result) {
-	die("mysql_select_db: ".mysql_error()."<br/>");
-}
+if (!$result) { die("mysql_select_db: ".mysql_error()."<br/>"); }
 
 for ($i = 0; $i < 9; $i++) {
 	$name_img[$i][0] = "down_arrow_origin.png";
 	$name_img[$i][1] = "up_arrow_origin.png";
 }
-
 if (empty($_GET["sort"])) {
 	$_GET["sort"] = 1;
 	$_GET["type"] = "asc";
@@ -42,114 +31,87 @@ switch ($_GET["sort"]) {
 case 1:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by Month, total < 0, explanation, on_date";
-		$name_img[0][0] = "down_arrow.png";
-	}
+		$name_img[0][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by Month DESC, total < 0, explanation, on_date";
-		$name_img[0][1] = "up_arrow.png";
-	}
+		$name_img[0][1] = "up_arrow.png"; }
 	break;
 case 2:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by on_date, Month, explanation";
-		$name_img[1][0] = "down_arrow.png";
-	}
+		$name_img[1][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by on_date DESC, Month, explanation";
-		$name_img[1][1] = "up_arrow.png";
-	}
+		$name_img[1][1] = "up_arrow.png"; }
 	break;
 case 3:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by Rubbish, Month, on_date, explanation";
-		$name_img[2][0] = "down_arrow.png";
-	}
+		$name_img[2][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by Rubbish DESC, Month, on_date, explanation";
-		$name_img[2][1] = "up_arrow.png";
-	}
+		$name_img[2][1] = "up_arrow.png"; }
 	break;
 case 4:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by Greenarea, Month, on_date, explanation";
-		$name_img[3][0] = "down_arrow.png";
-	}
+		$name_img[3][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by Greenarea DESC, Month, on_date, explanation";
-		$name_img[3][1] = "up_arrow.png";
-	}
+		$name_img[3][1] = "up_arrow.png"; }
 	break;
 case 5:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by homemanager, Month, on_date, explanation";
-		$name_img[4][0] = "down_arrow.png";
-	}
+		$name_img[4][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by homemanager DESC, Month, on_date, explanation";
-		$name_img[4][1] = "up_arrow.png";
-	}
+		$name_img[4][1] = "up_arrow.png"; }
 	break;
 case 6:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by cleanstreets, Month, on_date, explanation";
-		$name_img[5][0] = "down_arrow.png";
-	}
+		$name_img[5][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by cleanstreets DESC, Month, on_date, explanation";
-		$name_img[5][1] = "up_arrow.png";
-	}
+		$name_img[5][1] = "up_arrow.png"; }
 	break;
 case 7:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by fund, Month, on_date, explanation";
-		$name_img[6][0] = "down_arrow.png";
-	}
+		$name_img[6][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by fund DESC, Month, on_date, explanation";
-		$name_img[6][1] = "up_arrow.png";
-	}
+		$name_img[6][1] = "up_arrow.png"; }
 	break;
 case 8:
 	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by Rubbish+Greenarea+homemanager+cleanstreets+fund,
-			Month, on_date, explanation";
-		$name_img[7][0] = "down_arrow.png";
-	}
+		$sqlpl = " order by Rubbish+Greenarea+homemanager+cleanstreets+fund, Month, on_date, explanation";
+		$name_img[7][0] = "down_arrow.png"; }
 	else {
-		$sqlpl = " order by Rubbish+Greenarea+homemanager+cleanstreets+fund DESC,
-			Month, on_date, explanation";
-		$name_img[7][1] = "up_arrow.png";
-	}
+		$sqlpl = " order by Rubbish+Greenarea+homemanager+cleanstreets+fund DESC, Month, on_date, explanation";
+		$name_img[7][1] = "up_arrow.png"; }
 	break;
 case 9:
 	if ($_GET["type"] == "asc") {
 		$sqlpl = " order by explanation, Month, on_date";
-		$name_img[8][0] = "down_arrow.png";
-	}
+		$name_img[8][0] = "down_arrow.png"; }
 	else {
 		$sqlpl = " order by explanation DESC, Month, on_date";
-		$name_img[8][1] = "up_arrow.png";
-	}
+		$name_img[8][1] = "up_arrow.png"; }
 	break;
 };
 
 printf("<table class='tableBorder'>\n");
 print_html_th($name_img, 1);
 
-$sql = "SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data,
-	Rubbish, Greenarea, homemanager, cleanstreets, fund,
-	Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy".$sqlpl;
+$sql = "SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy".$sqlpl;
 $sql_result = mysql_query($sql);
-if (!$sql_result) {
-	die("mysql_query: ".mysql_error()."<br/>");
-}
+if (!$sql_result) { die("mysql_query: ".mysql_error()."<br/>"); }
 $sql_house_id = "SELECT ID, date_format(Month, '%Y.%m') as month, explanation  FROM Id_house;";
 $sql_res_house_id = mysql_query($sql_house_id);
-if (!$sql_res_house_id) {
-	die("mysql_query: ".mysql_error()."<br/>");
-}
-while ($array_id_house[] = mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) {
-}
+if (!$sql_res_house_id) { die("mysql_query: ".mysql_error()."<br/>"); }
+while ($array_id_house[] = mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) { }
 
 date_default_timezone_set('Europe/Helsinki');
 $is_paid = array();
@@ -211,9 +173,7 @@ $total_sql = mysql_query("SELECT trub, tgreen, thome, tclean, tfund,
 	trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub,
 	sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean,
 	sum(fund) as tfund from accountancy) as tab");
-if (!$total_sql) {
-	die( "mysql_query: ".mysql_error()."<br/>");
-}
+if (!$total_sql) { die( "mysql_query: ".mysql_error()."<br/>"); }
 
 if (isset($_GET["insert"]) && $_GET["insert"] == "5") {
 	printf("<tr><form>
@@ -243,9 +203,7 @@ printf("<tr align='right'>
 	</tr>\n");
 printf("</table>\n");
 
-if (!mysql_close($connect)) {
-	die("There is a problem with closing the connection<br/>");
-}
+if (!mysql_close($connect)) { die("There is a problem with closing the connection<br/>"); }
 ?>
 </body>
 </html>
