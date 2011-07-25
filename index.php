@@ -11,182 +11,55 @@
 <?php
 require 'dbinfo.php';
 require 'index_php_function.php';
+require 'index_sort_GET.php';
 
 $connect = mysql_connect($db_host, $db_user, $db_pass);
-if (!$connect) { die("mysql_connect: ".mysql_error()."<br/>"); }
-if (!mysql_set_charset('utf8')) { die("mysql_set_charset: ".mysql_error()."<br/>"); }
+if (!$connect) {
+	die("mysql_connect: ".mysql_error()."<br/>");
+}
+
+if (!mysql_set_charset('utf8')) {
+	die("mysql_set_charset: ".mysql_error()."<br/>");
+}
+
 $result = mysql_select_db($db_name);
-if (!$result) { die("mysql_select_db: ".mysql_error()."<br/>"); }
-
-for ($i = 0; $i < 9; $i++) {
-	$name_img[$i][0] = "down_arrow_origin.png";
-	$name_img[$i][1] = "up_arrow_origin.png";
+if (!$result) {
+	die("mysql_select_db: ".mysql_error()."<br/>");
 }
-if (empty($_GET["sort"])) {
-	$_GET["sort"] = 1;
-	$_GET["type"] = "asc";
-}
-
-switch ($_GET["sort"]) {
-case 1:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by Month, total < 0, explanation, on_date";
-		$name_img[0][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by Month DESC, total < 0, explanation, on_date";
-		$name_img[0][1] = "up_arrow.png"; }
-	break;
-case 2:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by on_date, Month, explanation";
-		$name_img[1][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by on_date DESC, Month, explanation";
-		$name_img[1][1] = "up_arrow.png"; }
-	break;
-case 3:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by Rubbish, Month, on_date, explanation";
-		$name_img[2][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by Rubbish DESC, Month, on_date, explanation";
-		$name_img[2][1] = "up_arrow.png"; }
-	break;
-case 4:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by Greenarea, Month, on_date, explanation";
-		$name_img[3][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by Greenarea DESC, Month, on_date, explanation";
-		$name_img[3][1] = "up_arrow.png"; }
-	break;
-case 5:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by homemanager, Month, on_date, explanation";
-		$name_img[4][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by homemanager DESC, Month, on_date, explanation";
-		$name_img[4][1] = "up_arrow.png"; }
-	break;
-case 6:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by cleanstreets, Month, on_date, explanation";
-		$name_img[5][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by cleanstreets DESC, Month, on_date, explanation";
-		$name_img[5][1] = "up_arrow.png"; }
-	break;
-case 7:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by fund, Month, on_date, explanation";
-		$name_img[6][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by fund DESC, Month, on_date, explanation";
-		$name_img[6][1] = "up_arrow.png"; }
-	break;
-case 8:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by Rubbish+Greenarea+homemanager+cleanstreets+fund, Month, on_date, explanation";
-		$name_img[7][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by Rubbish+Greenarea+homemanager+cleanstreets+fund DESC, Month, on_date, explanation";
-		$name_img[7][1] = "up_arrow.png"; }
-	break;
-case 9:
-	if ($_GET["type"] == "asc") {
-		$sqlpl = " order by explanation, Month, on_date";
-		$name_img[8][0] = "down_arrow.png"; }
-	else {
-		$sqlpl = " order by explanation DESC, Month, on_date";
-		$name_img[8][1] = "up_arrow.png"; }
-	break;
-};
-
-printf("<table class='tableBorder'>\n");
-print_html_th($name_img, 1);
-
-$sql = "SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy".$sqlpl;
-$sql_result = mysql_query($sql);
-if (!$sql_result) { die("mysql_query: ".mysql_error()."<br/>"); }
-$sql_house_id = "SELECT ID, date_format(Month, '%Y.%m') as month, explanation  FROM Id_house;";
-$sql_res_house_id = mysql_query($sql_house_id);
-if (!$sql_res_house_id) { die("mysql_query: ".mysql_error()."<br/>"); }
-while ($array_id_house[] = mysql_fetch_array($sql_res_house_id, MYSQL_ASSOC)) { }
 
 date_default_timezone_set('Europe/Helsinki');
-$is_paid = array();
-$total_before = 0;
-$is_rub = $is_green = $is_home = $is_clean = $is_fund = $is_total = 0;
-while ($array = mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
-	if ((($is_date != $array['month'] && $total_before > 0) || ($array['total'] <= 0 && $total_before > 0)) && $_GET["sort"] == "1" ) {
-		if ($is_date <=  date("Y.m")) {
-			print_not_payed($is_paid, $array_id_house, $is_date);
+
+if ($_GET["sort"] == 1) {
+	$month_for_pay = new DateTime('2010-07');
+	$month_for_pay_str = $month_for_pay->format('Y.m');
+	while (strcmp($month_for_pay_str, date('Y.m')) <= 0) {
+		$sql_select_by_month = "select * from accountancy where Month = str_to_date('".$month_for_pay_str.".00', '%Y.%m.%d')";
+		$sql_full_join = "(select * from (".$sql_select_by_month.") as acc1 left join Id_house on acc1.id_house = Id_house.id_h 
+			union select * from (".$sql_select_by_month.") as acc2 right join Id_house on acc2.id_house = Id_house.id_h) as full_table";
+		$final_sql = "SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, case Rubbish is NULL when true then 0 else Rubbish+Greenarea+homemanager+cleanstreets+fund end as total, explanation, id_house, payer_name from ".$sql_full_join.$sqlpl.";";
+		$sql_result = mysql_query($final_sql);
+		if (!$sql_result) {
+			die("mysql_query: ".mysql_error()."<br/>");
 		}
-		unset($is_paid);
+		print_main_table($sql_result, $month_for_pay_str, $name_img);
+		$month_for_pay->add(new DateInterval('P1M'));
+		$month_for_pay_str = $month_for_pay->format('Y.m');
 	}
-	if ($is_date != $array['month'] && $total_before != 0 && $_GET["sort"] == "1" ) {
-		print_html_tr_month_total($is_date, $is_rub, $is_green,
-			$is_home, $is_clean, $is_fund, $is_total);
-
-		printf("<tr>\n".
-			"<th colspan = 9 align = center>Отчет за $array[month]</th>\n".
-			"</tr>");
-
-		print_html_th($name_img, 0);
-
-		$is_rub = $is_green = $is_home = $is_clean = $is_fund = $is_total = 0;
+}
+else {
+	$sql = "SELECT date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy".$sqlpl;
+	$sql_result = mysql_query($sql);
+	if (!$sql_result) {
+		die("mysql_query: ".mysql_error()."<br/>");
 	}
-
-	printf("<tr>\n");
-	printf("<td>$array[month]</td>\n");
-	printf("<td>$array[data]</td>\n");
-	print_html_td_money($array['Rubbish']);
-	$is_rub += $array['Rubbish'];
-	print_html_td_money($array['Greenarea']);
-	$is_green += $array['Greenarea'];
-	print_html_td_money($array['homemanager']);
-	$is_home += $array['homemanager'];
-	print_html_td_money($array['cleanstreets']);
-	$is_clean += $array['cleanstreets'];
-	print_html_td_money($array['fund']);
-	$is_fund += $array['fund'];
-	print_html_td_money($array['total']);
-	$is_total += $array['total'];
-	printf("<td><nobr>$array[explanation]</nobr></td>\n");
-	printf("</tr>\n");
-	if (strpos($array['explanation'], "непълно плащане") != false) {
-		$is_paid[$array['id_house']] = 2;
+	while ($array = mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
+		print_array_tr($array);
 	}
-	else {
-		$is_paid[$array['id_house']] = 1;
-	}
-	$is_date = $array['month'];
-	$total_before = $array['total'];
 }
 
-if ($_GET["sort"] == "1") {
-	print_html_tr_month_total($is_date, $is_rub, $is_green,
-		$is_home, $is_clean, $is_fund, $is_total);
-}
-
-$total_sql = mysql_query("SELECT trub, tgreen, thome, tclean, tfund,
-	trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub,
-	sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean,
-	sum(fund) as tfund from accountancy) as tab");
-if (!$total_sql) { die( "mysql_query: ".mysql_error()."<br/>"); }
-
-if (isset($_GET["insert"]) && $_GET["insert"] == "5") {
-	printf("<tr><form>
-		<td><input type='text' size=7 name='month'/></td>
-		<td><input type='text' size=10 name='data_come'/></td>
-		<td><input type='text' size=8 name='rub'/></td>
-		<td><input type='text' size=8 name='area'/></td>
-		<td><input type='text' size=8 name='hman'/></td>
-		<td><input type='text' size=8 name='clean'/></td>
-		<td><input type='text' size=8 name='fund'/></td>
-		<td>&nbsp;</td>
-		<td><input type='text' size=30 name='explan'/></td>
-		</form></tr>");
+$total_sql = mysql_query("SELECT trub, tgreen, thome, tclean, tfund, trub+tgreen+thome+tclean+tfund as total from (select sum(Rubbish) as trub, sum(Greenarea) as tgreen, sum(homemanager) as thome, sum(cleanstreets) as tclean, sum(fund) as tfund from accountancy) as tab");
+if (!$total_sql) {
+	die( "mysql_query: ".mysql_error()."<br/>");
 }
 
 $total = mysql_fetch_array($total_sql, MYSQL_ASSOC);
@@ -203,7 +76,9 @@ printf("<tr align='right'>
 	</tr>\n");
 printf("</table>\n");
 
-if (!mysql_close($connect)) { die("There is a problem with closing the connection<br/>"); }
+if (!mysql_close($connect)) {
+	die("There is a problem with closing the connection<br/>");
+}
 ?>
 </body>
 </html>
