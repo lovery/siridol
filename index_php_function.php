@@ -66,6 +66,7 @@ function print_html_th($name_img, $print_sort_arrows) {
 			"<a href=?sort=7&type=desc>".
 			"<img src=".$name_img[6][1]." /></a>";
 
+
 		$total_arrows=
 			"<a href=?sort=8&type=asc>".
 			"<img src=".$name_img[7][0]." /></a>".
@@ -90,48 +91,70 @@ function print_html_th($name_img, $print_sort_arrows) {
 		$descr_arrows="";
 	}
 
-	printf("<tr>\n".
-		"<th class='width_td'><nobr>За<br/>месец$month_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Дата$date_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Смет$rubbish_arrows</nobr></th>\n".
-		"<th class='width_td'>Зелени <nobr>площи$greenarea_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Домоупр.$homemanager_arrows</nobr></th>\n".
-		"<th class='width_td'>Почист. <nobr>улици$cleanstreets_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Фонд$fund_arrows</nobr></th>\n".
-		"<th class='width_td'><nobr>Общо$total_arrows</nobr></th>\n".
-
-		"<th><nobr>Пояснение$descr_arrows</nobr></th>\n".
-		"</tr>\n");
+	printf("<tr>\n
+		<th class='width_td'><nobr>За<br/>месец$month_arrows</nobr></th>\n
+		<th class='width_td'><nobr>Дата$date_arrows</nobr></th>\n
+		<th class='width_td'><nobr>Смет$rubbish_arrows</nobr></th>\n
+		<th class='width_td'>Зелени <nobr>площи$greenarea_arrows</nobr></th>\n
+		<th class='width_td'><nobr>Домоупр.$homemanager_arrows</nobr></th>\n
+		<th class='width_td'>Почист. <nobr>улици$cleanstreets_arrows</nobr></th>\n
+		<th class='width_td'><nobr>Фонд$fund_arrows</nobr></th>\n
+		<th class='width_td'><nobr>Общо$total_arrows</nobr></th>\n
+		<th><nobr>Пояснение$descr_arrows</nobr></th>\n
+		</tr>\n");
 }
 
-function print_not_payed($is_paid, $array_id_house, $current_month) {
-	$i=0;
-	$size_id_house=count($array_id_house);
-	while ($i < $size_id_house-1) {
-		$id_payer=$array_id_house[$i]['ID'];
-		if (!isset($is_paid[$id_payer])) {
-			if ($current_month >= $array_id_house[$i]['month']) {
-				printf("<tr class='no_payer'>\n".
-					"<td><nobr>$current_month</nobr></td>\n".
-					"<td colspan=7 align=center>Неплатено</td>\n".
-					"<td><nobr>".
-					$array_id_house[$i]['explanation'].
-					"</th>\n".
-					"</tr>");
-			}
+function print_not_payed($array, $current_month, $what_to_print) {
+	printf("<tr class='no_payer'>\n
+		<td><nobr>$current_month</nobr></td>\n");
+	if ($what_to_print == 1) {
+		printf("<td colspan=7 align=center>Неплатено</td>\n");
+	}
+	else {
+		printf("<td colspan=7 align=center>Има за доплащане</td>\n");
+	}
+	printf("<td><nobr>".$array['payer_name']."</th>\n
+		</tr>");
+}
+
+function print_array_tr($array) {
+	printf("<tr>\n
+		<td>$array[month]</td>\n
+		<td>$array[data]</td>\n");
+	print_html_td_money($array['Rubbish']);
+	print_html_td_money($array['Greenarea']);
+	print_html_td_money($array['homemanager']);
+	print_html_td_money($array['cleanstreets']);
+	print_html_td_money($array['fund']);
+	print_html_td_money($array['total']);
+	printf("<td><nobr>$array[explanation]</nobr></td>\n
+		</tr>\n");
+}
+
+function print_main_table($sql_result, $current_month, $name_img) {
+	$is_rub = $is_green = $is_home = $is_clean = $is_fund = $is_total = 0;
+	if (strcmp($current_month, '2010.07') != 0 && $_GET["sort"] == "1" ) {
+		printf("<tr>\n<th colspan = 9 align = center>Отчет за $current_month</th>\n</tr>");
+		print_html_th($name_img, 0);
+	}
+	while ($array = mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
+		if ($array['total'] == 0) {
+			print_not_payed($array, $current_month, 1);
 		}
 		else {
-			if ($is_paid[$id_payer]==2) {
-				printf("<tr class='no_payer'>\n".
-					"<td><nobr>$current_month</nobr></td>\n".
-					"<td colspan=7 align=center>Има за доплащане</td>\n".
-					"<td><nobr>".
-					$array_id_house[$i]['explanation'].
-					"</th>\n".
-					"</tr>");
+			print_array_tr($array);
+			$is_rub += $array['Rubbish'];
+			$is_green += $array['Greenarea'];
+			$is_home += $array['homemanager'];
+			$is_clean += $array['cleanstreets'];
+			$is_fund += $array['fund'];
+			if (strpos($array['explanation'], "непълно плащане") != false) {
+				print_not_payed($array, $current_month, 2);
 			}
 		}
-		$i++;
+	}
+	if ($_GET["sort"] == "1") {
+		print_html_tr_month_total($current_month, $is_rub, $is_green, $is_home, $is_clean, $is_fund, $is_total);
 	}
 }
 ?>
