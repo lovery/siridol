@@ -138,8 +138,10 @@ function print_main_table($sql_result, $current_month, $name_img) {
 		print_html_th($name_img, 0);
 	}
 	while ($array = mysql_fetch_array($sql_result, MYSQL_ASSOC)) {
-		if ($array['total'] == 0) {
-			print_not_payed($array, $current_month, 1);
+		if ($array['total'] == 0 ) {
+			if (strcmp($current_month, date('Y.m')) <= 0) {
+				print_not_payed($array, $current_month, 1);
+			}
 		}
 		else {
 			print_array_tr($array);

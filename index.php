@@ -32,7 +32,13 @@ date_default_timezone_set('Europe/Helsinki');
 if ($_GET["sort"] == 1) {
 	$month_for_pay = new DateTime('2010-07');
 	$month_for_pay_str = $month_for_pay->format('Y.m');
-	while (strcmp($month_for_pay_str, date('Y.m')) <= 0) {
+	$sql_get_max_date = "select date_format(max(Month), '%Y.%m') as max_date from accountancy;" ;
+	$sql_result_max_date = mysql_query($sql_get_max_date);
+	if (!$sql_result_max_date) {
+		die("mysql_query: ".mysql_error()."<br/>");
+	}
+	$max_date = mysql_fetch_array($sql_result_max_date, MYSQL_ASSOC);
+	while (strcmp($month_for_pay_str, $max_date["max_date"]) <= 0) {
 		$sql_select_by_month = "select * from accountancy where Month = str_to_date('".$month_for_pay_str.".00', '%Y.%m.%d')";
 		$sql_full_join = "(select * from (".$sql_select_by_month.") as acc1 left join Id_house on acc1.id_house = Id_house.id_h 
 			union select * from (".$sql_select_by_month.") as acc2 right join Id_house on acc2.id_house = Id_house.id_h) as full_table";
