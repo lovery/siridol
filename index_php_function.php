@@ -113,7 +113,7 @@ function print_not_payed($array, $current_month, $what_to_print) {
 	else {
 		printf("<td colspan=7 align=center>Има за доплащане</td>\n");
 	}
-	printf("<td><nobr>".$array['payer_name']."</th>\n
+	printf("<td><nobr>".$array['payer_name']."</td>\n
 		</tr>");
 }
 
