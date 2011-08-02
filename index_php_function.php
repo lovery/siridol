@@ -105,7 +105,7 @@ function print_html_th($name_img, $print_sort_arrows) {
 }
 
 function print_not_payed($array, $current_month, $what_to_print) {
-	printf("<tr class='no_payer'>\n
+	printf("<tr class='no_payer' onclick='window.location.href=\"index.php?only_for=$array[id_on_house]\"'>\n
 		<td><nobr>$current_month</nobr></td>\n");
 	if ($what_to_print == 1) {
 		printf("<td colspan=7 align=center>Неплатено</td>\n");
@@ -117,9 +117,14 @@ function print_not_payed($array, $current_month, $what_to_print) {
 		</tr>");
 }
 
-function print_array_tr($array) {
-	printf("<tr>\n
-		<td>$array[month]</td>\n
+function print_array_tr($array, $cases = 1) {
+	if ($array['total'] > 0 && $cases == 1) {
+		printf("<tr class='tr_click' onclick='window.location.href=\"index.php?only_for=$array[id_on_house]\"'>\n");
+	}
+	else {
+		printf("<tr>\n");
+	}
+	printf("<td>$array[month]</td>\n
 		<td>$array[data]</td>\n");
 	print_html_td_money($array['Rubbish']);
 	print_html_td_money($array['Greenarea']);
@@ -158,5 +163,72 @@ function print_main_table($sql_result, $current_month, $name_img) {
 	if ($_GET["sort"] == "1") {
 		print_html_tr_month_total($current_month, $is_rub, $is_green, $is_home, $is_clean, $is_fund, $is_total);
 	}
+}
+
+function print_not_payed_in_other_table($explanation, $current_month, $what_to_print) {
+	printf("<tr class='other_no_payer'>\n
+		<td><nobr>$current_month</nobr></td>\n");
+	if ($what_to_print == 1) {
+		printf("<td colspan=7 align=center>Неплатено</td>\n");
+	}
+	else {
+		printf("<td colspan=7 align=center>Има за доплащане</td>\n");
+	}
+	printf("<td><nobr>$explanation[payer_name]</nobr></td>\n</tr>");
+}
+
+function only_for_one_payer_printing($id_house) {
+	$sql_only_for_one_payer = "select date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy where id_house = ".$id_house." order by month, data;";
+	$sql_explanation = "select payer_name from Id_house where id_h = ".$id_house.";";
+	$sql_res = mysql_query($sql_only_for_one_payer);
+	$sql_res_expl = mysql_query($sql_explanation);
+	if (!$sql_res || !$sql_res_expl) {
+		die("mysql_query: ".mysql_error()."<br/>");
+	}
+	$explanation = mysql_fetch_array($sql_res_expl, MYSQL_ASSOC);
+	$month_for_pay = new DateTime('2010-07');
+	$month_for_pay_str = $month_for_pay->format('Y.m');
+	$array = mysql_fetch_array($sql_res, MYSQL_ASSOC);
+	$sum_for_pay = 0;
+	while(strcmp($month_for_pay_str, date('Y.m')) <= 0) {
+		$sql_get_fee_for_month = "select the_fee from month_fee where month_for = date_format('".$month_for_pay_str.".00', '%Y.%m.%d');";
+		$sql_res_fee = mysql_query($sql_get_fee_for_month);
+		if (!$sql_res_fee) {
+			die("mysql_query: ".mysql_error()."<br/>");
+		}
+		$tmp_month_fee = mysql_fetch_array($sql_res_fee, MYSQL_ASSOC);
+		$month_fee_for_pay = $tmp_month_fee['the_fee'];
+		do {
+			$half_payer = 1;
+			if ($array && strcmp($array['month'], $month_for_pay_str) == 0) {
+				print_array_tr($array, 2);
+				if (strpos($array['explanation'], "непълно плащане") != false) {
+					print_not_payed_in_other_table($explanation, $month_for_pay_str, 2);
+					$sum_for_pay += ($month_fee_for_pay - $array['total']);
+				}
+				if (strpos($array['explanation'], "не обитава") != false) {
+					$half_payer = 0.5;
+				}
+				else {
+					$half_payer = 1;
+				}
+			}
+			else {
+				$sum_for_pay += ($half_payer * $month_fee_for_pay);
+				if ($half_payer == 0.5) {
+					$explanation = $explanation.", не обитава";
+				}
+				print_not_payed_in_other_table($explanation, $month_for_pay_str, 1);
+			}
+			$array = mysql_fetch_array($sql_res, MYSQL_ASSOC);
+		}while ($array && strcmp($array['month'], $month_for_pay_str) == 0);
+		$month_for_pay->add(new DateInterval('P1M'));
+		$month_for_pay_str = $month_for_pay->format('Y.m');
+	}
+	printf("<tr class='tr_total'>
+		<td colspan=7>Общо за плащане до сега:</td>");
+	printf("<td class=tdNONegative>%.2f</td>\n", $sum_for_pay);
+	printf("<td></td>
+		</tr>");
 }
 ?>
