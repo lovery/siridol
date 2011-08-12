@@ -113,8 +113,8 @@ function print_not_payed($array, $current_month, $what_to_print) {
 	else {
 		printf("<td colspan=7 align=center>Има за доплащане</td>\n");
 	}
-	printf("<td><nobr>".$array['payer_name']."</td>\n
-		</tr>");
+	printf("<td><nobr>".$array['payer_name']."</td>\n");
+	printf("</tr>");
 }
 
 function print_array_tr($array, $cases = 1) {
@@ -170,12 +170,18 @@ function print_not_payed_in_other_table($explanation, $current_month, $what_to_p
 	printf("<tr class='other_no_payer'>\n
 		<td><nobr>$current_month</nobr></td>\n");
 	if ($what_to_print == 1) {
-		printf("<td colspan=7 align=center>Неплатено</td>\n");
-	}
-	else {
 		printf("<td colspan=7 align=center>Има за доплащане</td>\n");
 	}
-	printf("<td><nobr>$explanation[payer_name]</nobr></td>\n</tr>");
+	else {
+		printf("<td colspan=7 align=center>Неплатено</td>\n");
+	}
+	if ($what_to_print == 2) {
+		printf("<td><nobr>".$explanation['payer_name'].", не обитава</td>\n");
+	}
+	else {
+		printf("<td><nobr>".$explanation['payer_name']."</td>\n");
+	}
+	printf("</tr>");
 }
 
 function only_for_one_payer_printing($id_house) {
@@ -199,13 +205,13 @@ function only_for_one_payer_printing($id_house) {
 		}
 		$tmp_month_fee = mysql_fetch_array($sql_res_fee, MYSQL_ASSOC);
 		$month_fee_for_pay = $tmp_month_fee['the_fee'];
+		$half_payer = 0.5;
 		do {
-			$half_payer = 1;
 			if ($array && strcmp($array['month'], $month_for_pay_str) == 0) {
 				print_array_tr($array, 2);
 				if (strpos($array['explanation'], "непълно плащане") != false) {
-					print_not_payed_in_other_table($explanation, $month_for_pay_str, 2);
-					$sum_for_pay += ($month_fee_for_pay - $array['total']);
+					print_not_payed_in_other_table($explanation, $month_for_pay_str, 1);
+					$sum_for_pay += ($half_payer * $month_fee_for_pay - $array['total']);
 				}
 				if (strpos($array['explanation'], "не обитава") != false) {
 					$half_payer = 0.5;
@@ -217,9 +223,11 @@ function only_for_one_payer_printing($id_house) {
 			else {
 				$sum_for_pay += ($half_payer * $month_fee_for_pay);
 				if ($half_payer == 0.5) {
-					$explanation = $explanation.", не обитава";
+					print_not_payed_in_other_table($explanation, $month_for_pay_str, 2);
 				}
-				print_not_payed_in_other_table($explanation, $month_for_pay_str, 1);
+				else {
+					print_not_payed_in_other_table($explanation, $month_for_pay_str, 3);
+				}
 			}
 			$array = mysql_fetch_array($sql_res, MYSQL_ASSOC);
 		}while ($array && strcmp($array['month'], $month_for_pay_str) == 0);
@@ -227,7 +235,7 @@ function only_for_one_payer_printing($id_house) {
 		$month_for_pay_str = $month_for_pay->format('Y.m');
 	}
 	printf("<tr class='tr_total'>
-		<td colspan=7>Общо за плащане до сега:</td>");
+		<td colspan=7>Към ".date('d.m.Y')." дължи:</td>");
 	printf("<td class=tdNONegative>%.2f</td>\n", $sum_for_pay);
 	printf("<td></td>
 		</tr>");
