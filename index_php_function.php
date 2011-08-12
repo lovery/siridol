@@ -113,7 +113,7 @@ function print_not_payed($array, $current_month, $what_to_print) {
 	else {
 		printf("<td colspan=7 align=center>Има за доплащане</td>\n");
 	}
-	printf("<td><nobr>".$array['payer_name']."</td>\n");
+	printf("<td><nobr>".$array['payer_name']."</nobr></td>\n");
 	printf("</tr>");
 }
 
@@ -176,10 +176,10 @@ function print_not_payed_in_other_table($explanation, $current_month, $what_to_p
 		printf("<td colspan=7 align=center>Неплатено</td>\n");
 	}
 	if ($what_to_print == 2) {
-		printf("<td><nobr>".$explanation['payer_name'].", не обитава</td>\n");
+		printf("<td><nobr>".$explanation['payer_name'].", не обитава</nobr></td>\n");
 	}
 	else {
-		printf("<td><nobr>".$explanation['payer_name']."</td>\n");
+		printf("<td><nobr>".$explanation['payer_name']."</nobr></td>\n");
 	}
 	printf("</tr>");
 }
