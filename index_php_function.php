@@ -155,6 +155,7 @@ function print_main_table($sql_result, $current_month, $name_img) {
 			$is_home += $array['homemanager'];
 			$is_clean += $array['cleanstreets'];
 			$is_fund += $array['fund'];
+			$is_total += $array['total'];
 			if (strpos($array['explanation'], "непълно плащане") != false) {
 				print_not_payed($array, $current_month, 2);
 			}
