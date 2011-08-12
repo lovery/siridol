@@ -197,6 +197,7 @@ function only_for_one_payer_printing($id_house) {
 	$month_for_pay_str = $month_for_pay->format('Y.m');
 	$array = mysql_fetch_array($sql_res, MYSQL_ASSOC);
 	$sum_for_pay = 0;
+	$half_payer = 0.5;
 	while(strcmp($month_for_pay_str, date('Y.m')) <= 0) {
 		$sql_get_fee_for_month = "select the_fee from month_fee where month_for = date_format('".$month_for_pay_str.".00', '%Y.%m.%d');";
 		$sql_res_fee = mysql_query($sql_get_fee_for_month);
@@ -205,7 +206,6 @@ function only_for_one_payer_printing($id_house) {
 		}
 		$tmp_month_fee = mysql_fetch_array($sql_res_fee, MYSQL_ASSOC);
 		$month_fee_for_pay = $tmp_month_fee['the_fee'];
-		$half_payer = 0.5;
 		do {
 			if ($array && strcmp($array['month'], $month_for_pay_str) == 0) {
 				print_array_tr($array, 2);
@@ -213,10 +213,7 @@ function only_for_one_payer_printing($id_house) {
 					print_not_payed_in_other_table($explanation, $month_for_pay_str, 1);
 					$sum_for_pay += ($half_payer * $month_fee_for_pay - $array['total']);
 				}
-				if (strpos($array['explanation'], "не обитава") != false) {
-					$half_payer = 0.5;
-				}
-				else {
+				if (strpos($array['explanation'], "не обитава") == false) {
 					$half_payer = 1;
 				}
 			}
