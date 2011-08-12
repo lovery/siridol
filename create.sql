@@ -12,8 +12,6 @@ CREATE TABLE `accountancy` (
 	PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `accountancy` ADD `id_house` INT(5);
-
 DROP TABLE IF EXISTS `Id_house`;
 CREATE TABLE `Id_house` (
 	`ID` INT (5) NOT NULL,
@@ -21,14 +19,10 @@ CREATE TABLE `Id_house` (
 	`explanation` VARCHAR(150) NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `Id_house` CHANGE `ID` `id_h` INT(5) NOT NULL;
-ALTER TABLE `Id_house` CHANGE `month` `strart_month_pay` DATE NOT NULL;
-ALTER TABLE `Id_house` CHANGE `explanation` `payer_name` VARCHAR(150) NOT NULL;
-
 DROP TABLE IF EXISTS `month_fee`;
 CREATE TABLE `month_fee` (
 	  `month_for` date NOT NULL,
 	  `the_fee` decimal(4,2) DEFAULT NULL,
 	  PRIMARY KEY (`month_for`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
