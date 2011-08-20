@@ -231,10 +231,28 @@ function only_for_one_payer_printing($id_house) {
 		$month_for_pay->add(new DateInterval('P1M'));
 		$month_for_pay_str = $month_for_pay->format('Y.m');
 	}
-	printf("<tr class='tr_total'>
-		<td colspan=7>Към ".date('d.m.Y')." дължи:</td>");
-	printf("<td class=tdNONegative>%.2f</td>\n", $sum_for_pay);
+	$sql_remaining = "select date_format(Month, '%Y.%m') as month, date_format(on_date, '%Y.%m.%d') as data, Rubbish, Greenarea, homemanager, cleanstreets, fund, Rubbish+Greenarea+homemanager+cleanstreets+fund as total, explanation, id_house from accountancy where id_house = ".$id_house." and month > str_to_date('00.".date('m.Y')."', '%d.%m.%Y') order by month, data; ";
+	$result_remaining = mysql_query($sql_remaining);
+	if (!$result_remaining) {
+		die("mysql_query: ".mysql_error()."<br/>");
+	}
+	$paied_much = 0;
+	while ($array = mysql_fetch_array($result_remaining, MYSQL_ASSOC)) {
+		print_array_tr($array, 2);
+		$paied_much += $array['total'];
+	}
+	if ($paied_much == 0) {
+		printf("<tr class='tr_total'>
+			<td colspan=7>Към ".date('d.m.Y')." дължи:</td>");
+		printf("<td class=tdNONegative>%.2f</td>\n", $sum_for_pay);
+	}
+	else {
+		printf("<tr class='tr_total'>
+			<td colspan=7>Към ".date('d.m.Y')." дадени предварително:</td>");
+		printf("<td class=tdNONegative>%.2f</td>\n", $paied_much);
+	}
 	printf("<td></td>
 		</tr>");
+		
 }
 ?>
