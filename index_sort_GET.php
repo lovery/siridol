@@ -12,11 +12,12 @@ if (empty($_GET["sort"])) {
 
 switch ($_GET["sort"]) {
 case 1:
+        $payer_name_order = "(case when payer_name IS NULL and total > 0 then explanation else payer_name end)";
         if ($_GET["type"] == "asc") {
-                $sqlpl = " order by total < 0, payer_name, on_date";
-               $name_img[0][0] = "down_arrow.png"; }
+                $sqlpl = " order by total < 0, $payer_name_order, on_date";
+                $name_img[0][0] = "down_arrow.png"; }
         else {
-                $sqlpl = " order by total < 0 DESC, payer_name DESC, on_date";
+                $sqlpl = " order by total < 0 DESC, $payer_name_order DESC, on_date";
                 $name_img[0][1] = "up_arrow.png"; }
         break;
 case 2:
